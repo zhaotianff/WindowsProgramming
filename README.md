@@ -1,2 +1,9 @@
 # WindowsProgramming
-Windows编程系列示例代码
+Windows programming sample code
+
+## Requirements
+* Visual Studio 2017
+* VC toolset 141
+
+## Licenses
+[MIT](LICENSE)
