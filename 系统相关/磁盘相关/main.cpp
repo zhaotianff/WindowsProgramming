@@ -8,9 +8,11 @@
 using namespace std;
 
 int main()
-{
-	GetDiskDriver();
+{		
+	GetDiskDriverVolumnName();
 
-	
-    //GetVolumeInformation()
+	GetDiskDriverSpaceByDriverName(L"C:\\");
+
+	//格式化磁盘 谨慎操作
+	//FormatDriverByDriverName(L"G:\\");
 }

@@ -1,10 +1,4 @@
 #include "disk.h"
-#include <vector>
-#include<string>
-#include<iostream>
-#include<windows.h>
-
-using namespace std;
 
 void GetDiskDriverVolumnName()
 {
@@ -12,13 +6,12 @@ void GetDiskDriverVolumnName()
 
 
 	if (dwSize != 0)
-	{
-		
-		HANDLE heap = GetProcessHeap();
-
-		LPTSTR lp = (LPTSTR)HeapAlloc(heap, HEAP_ZERO_MEMORY, dwSize * sizeof(TCHAR));
+	{		
+		LPTSTR lp = new TCHAR [dwSize * sizeof(TCHAR)];
 
 		GetLogicalDriveStrings(dwSize * sizeof(TCHAR), lp);
+
+		LPTSTR lpTemp = lp;
 
 		while (*lp != 0)
 		{
@@ -34,16 +27,48 @@ void GetDiskDriverVolumnName()
 				LPTSTR lpSysNameBuf = new TCHAR[10];
 				DWORD dwSysNameSize = 10;
 				GetVolumeInformation(lp, lpNameBuf, dwNameSize, &dwSerialNumber, &dwMaxLen, &dwFileFlag, lpSysNameBuf, dwSysNameSize);
-				wcout << lp <<"  "<< lpNameBuf<< endl;
+				wcout << lp <<"  "<< lpNameBuf<< " "<< hex << dwSerialNumber  <<endl;
+
+				/*
+				* hex 十六进制
+				* oct 八进制
+				* dec 十进制 
+				*/
+
+				delete[] lpSysNameBuf;
+				delete[] lpNameBuf;
 			}
 
 			lp = wcschr(lp, 0) + 1;
 		}
+
+		lp = lpTemp;
+		delete[] lp;
 	}
 
 }
 
-void GetDiskDriverType()
+void FormatDriverByDriverName(LPTSTR driver)
 {
+	UINT driveID = driver[0] - 'A';
+	//代码未启用，谨防误操作
+	//SHFormatDrive(GetConsoleWindow(),driveID, SHFMT_ID_DEFAULT,0);
+}
 
+void GetDiskDriverSpaceByDriverName(LPTSTR driver)
+{
+	ULARGE_INTEGER nFreeBytesAvailableToCaller;
+	ULARGE_INTEGER nTotalNumberOfBytes;
+	ULARGE_INTEGER nTotalNumberOfFreeBytes;
+	auto result = GetDiskFreeSpaceEx(driver, &nFreeBytesAvailableToCaller, &nTotalNumberOfBytes, &nTotalNumberOfFreeBytes);
+
+	if (result != 0)
+	{
+		std::wstringstream wss;
+		wss << "Drive:" << driver << " total size: "
+			<< nTotalNumberOfBytes.QuadPart << " bytes "
+		    << "available size: "
+			<< nTotalNumberOfFreeBytes.QuadPart << " bytes ";
+		wcout << wss.str() << endl;		
+	}
 }
