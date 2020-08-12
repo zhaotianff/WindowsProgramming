@@ -7,9 +7,9 @@ Windows programming sample code
 * Windows 10 1703+
 
 ## Code list 
-* Disk
-* Desktop
-* ClipBoard
+* [Disk](https://github.com/zhaotianff/WindowsProgramming/tree/master/Disk)
+* [Desktop](https://github.com/zhaotianff/WindowsProgramming/tree/master/Desktop)
+* [ClipBoard](https://github.com/zhaotianff/WindowsProgramming/tree/master/ClipBoard)
 
 ## Licenses
 [MIT](LICENSE)
