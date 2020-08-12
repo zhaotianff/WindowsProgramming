@@ -67,6 +67,7 @@ BEGIN_MESSAGE_MAP(CClipBoardDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDOK, &CClipBoardDlg::OnBnClickedOk)
+	ON_BN_CLICKED(IDC_BUTTON1, &CClipBoardDlg::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 
@@ -159,7 +160,119 @@ HCURSOR CClipBoardDlg::OnQueryDragIcon()
 
 void CClipBoardDlg::OnBnClickedOk()
 {
+	//https://docs.microsoft.com/en-us/windows/win32/dataxchg/clipboard
+
 	m_list.ResetContent();
 
 	
+}
+
+
+void CClipBoardDlg::OnBnClickedButton1()
+{
+	//https://docs.microsoft.com/en-us/windows/win32/dataxchg/standard-clipboard-formats#constants
+
+	m_list.ResetContent();
+
+	if (OpenClipboard())
+	{
+		UINT format = 0;
+
+		while (format = EnumClipboardFormats(format))
+		{
+			m_list.AddString(GetClipBoardFormat(format));
+		}
+	}
+}
+
+CString CClipBoardDlg::GetClipBoardFormat(int index)
+{
+	CString format;
+	switch (index)
+	{
+	case 1:
+		format = "CF_TEXT";
+		break;
+	case 2:
+		format = "CF_BITMAP";
+		break;
+	case 3:
+		format = "CF_METAFILEPICT";
+		break;
+	case 4:
+		format = "CF_SYLK";
+		break;
+	case 5:
+		format = "CF_DIF";
+		break;
+	case 6:
+		format = "CF_TIFF";
+		break;
+	case 7:
+		format = "CF_OEMTEXT";
+		break;
+	case 8:
+		format = "CF_DIB";
+		break;
+	case 9:
+		format = "CF_PALETTE";
+		break;
+	case 10:
+		format = "CF_PENDATA";
+		break;
+	case 11:
+		format = "CF_RIFF";
+		break;
+	case 12:
+		format = "CF_WAVE";
+		break;
+	case 13:
+		format = "CF_UNICODETEXT";
+		break;
+	case 14:
+		format = "CF_ENHMETAFILE";
+		break;
+	case 15:
+		format = "CF_HDROP";
+		break;
+	case 16:
+		format = "CF_LOCALE";
+		break;
+	case 17:
+		format = "CF_MAX";
+		break;
+	case 0x0080:
+		format = "CF_OWNERDISPLAY";
+		break;
+	case 0x0081:
+		format = "CF_DSPTEXT";
+		break;
+	case 0x0082:
+		format = "CF_DSPBITMAP";
+		break;
+	case 0x0083:
+		format = "CF_DSPMETAFILEPICT";
+		break;
+	case 0x008E:
+		format = "CF_DSPENHMETAFILE";
+		break;
+	case 0x0200:
+		format = "CF_PRIVATEFIRST";
+		break;
+	case 0x02FF:
+		format = "CF_PRIVATELAST";
+		break;
+	case 0x0300:
+		format = "CF_GDIOBJFIRST";
+		break;
+	case 0x03FF:
+		format = "CF_GDIOBJLAST";
+		break;
+	default:
+		format.Format(TEXT("%d"),index);
+		break;
+
+	}
+
+	return format;
 }

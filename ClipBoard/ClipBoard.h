@@ -1,6 +1,11 @@
-﻿
-// ClipBoard.h: PROJECT_NAME 应用程序的主头文件
-//
+﻿/*****************************************************************************
+*                                                                            *
+*  剪贴板相关                                                                *
+*  Copyright (C) 2020 https://github.com/zhaotianff                          *
+*  All rights reserved.                                                      *
+*  Licensed under the MIT License.                                           *
+*                                                                            *
+*****************************************************************************/
 
 #pragma once
 

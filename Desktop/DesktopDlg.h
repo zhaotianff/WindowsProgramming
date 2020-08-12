@@ -1,7 +1,11 @@
-﻿
-// DesktopDlg.h: 头文件
-//
-
+﻿/*****************************************************************************
+*                                                                            *
+*  桌面相关                                                                  *
+*  Copyright (C) 2020 https://github.com/zhaotianff                          *
+*  All rights reserved.                                                      *
+*  Licensed under the MIT License.                                           *
+*                                                                            *
+*****************************************************************************/
 #pragma once
 
 

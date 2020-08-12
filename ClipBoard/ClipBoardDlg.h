@@ -34,4 +34,8 @@ protected:
 public:
 	afx_msg void OnBnClickedOk();
 	CListBox m_list;
+	afx_msg void OnBnClickedButton1();
+
+public:
+	CString GetClipBoardFormat(int index);
 };
