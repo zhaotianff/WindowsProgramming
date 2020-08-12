@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Disk", "Disk\Disk.vcxproj",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Desktop", "Desktop\Desktop.vcxproj", "{49E2F703-279D-4ED6-8F66-3082E24C50C1}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ClipBoard", "ClipBoard\ClipBoard.vcxproj", "{453ACEF5-DC12-43B9-A1D7-2D775FAE022A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{49E2F703-279D-4ED6-8F66-3082E24C50C1}.Release|x64.Build.0 = Release|x64
 		{49E2F703-279D-4ED6-8F66-3082E24C50C1}.Release|x86.ActiveCfg = Release|Win32
 		{49E2F703-279D-4ED6-8F66-3082E24C50C1}.Release|x86.Build.0 = Release|Win32
+		{453ACEF5-DC12-43B9-A1D7-2D775FAE022A}.Debug|x64.ActiveCfg = Debug|x64
+		{453ACEF5-DC12-43B9-A1D7-2D775FAE022A}.Debug|x64.Build.0 = Debug|x64
+		{453ACEF5-DC12-43B9-A1D7-2D775FAE022A}.Debug|x86.ActiveCfg = Debug|Win32
+		{453ACEF5-DC12-43B9-A1D7-2D775FAE022A}.Debug|x86.Build.0 = Debug|Win32
+		{453ACEF5-DC12-43B9-A1D7-2D775FAE022A}.Release|x64.ActiveCfg = Release|x64
+		{453ACEF5-DC12-43B9-A1D7-2D775FAE022A}.Release|x64.Build.0 = Release|x64
+		{453ACEF5-DC12-43B9-A1D7-2D775FAE022A}.Release|x86.ActiveCfg = Release|Win32
+		{453ACEF5-DC12-43B9-A1D7-2D775FAE022A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

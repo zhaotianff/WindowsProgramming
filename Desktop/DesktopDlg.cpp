@@ -65,6 +65,15 @@ BEGIN_MESSAGE_MAP(CDesktopDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_BUTTON1, &CDesktopDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON2, &CDesktopDlg::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON3, &CDesktopDlg::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON4, &CDesktopDlg::OnBnClickedButton4)
+	ON_BN_CLICKED(IDC_BUTTON5, &CDesktopDlg::OnBnClickedButton5)
+	ON_BN_CLICKED(IDC_BUTTON6, &CDesktopDlg::OnBnClickedButton6)
+	ON_BN_CLICKED(IDC_BUTTON7, &CDesktopDlg::OnBnClickedButton7)
+	ON_BN_CLICKED(IDC_BUTTON8, &CDesktopDlg::OnBnClickedButton8)
+	ON_BN_CLICKED(IDC_BUTTON9, &CDesktopDlg::OnBnClickedButton9)
 END_MESSAGE_MAP()
 
 
@@ -153,3 +162,150 @@ HCURSOR CDesktopDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void CDesktopDlg::OnBnClickedButton1()
+{
+	HWND desktop = ::FindWindow(TEXT("Progman"), NULL);
+	
+	if (desktop != NULL)
+	{
+		::ShowWindow(desktop, SW_HIDE);
+	}
+
+}
+
+
+void CDesktopDlg::OnBnClickedButton2()
+{
+	HWND desktop = ::FindWindow(TEXT("Progman"), NULL);
+
+	if (desktop != NULL)
+	{
+		::ShowWindow(desktop, SW_SHOW);
+	}
+}
+
+
+void CDesktopDlg::OnBnClickedButton3()
+{
+	HWND parent = ::FindWindow(TEXT("Shell_TrayWnd"), NULL);
+
+	if (parent != NULL)
+	{
+		HWND start = ::FindWindowEx(parent, NULL, TEXT("Start"), NULL);
+
+		if (start != NULL)
+		{
+			::ShowWindow(start, SW_HIDE);
+		}
+	}
+
+}
+
+
+void CDesktopDlg::OnBnClickedButton4()
+{
+	HWND parent = ::FindWindow(TEXT("Shell_TrayWnd"), NULL);
+
+	if (parent != NULL)
+	{
+		HWND start = ::FindWindowEx(parent, NULL, TEXT("Start"), NULL);
+
+		if (start != NULL)
+		{
+			::ShowWindow(start, SW_SHOW);
+		}
+	}
+}
+
+
+void CDesktopDlg::OnBnClickedButton5()
+{
+	HWND tray = ::FindWindow(TEXT("Shell_traywnd"), NULL);
+
+	if (tray != NULL)
+	{
+		::ShowWindow(tray, SW_HIDE);
+	}
+}
+
+
+void CDesktopDlg::OnBnClickedButton6()
+{
+	HWND tray = ::FindWindow(TEXT("Shell_traywnd"), NULL);
+
+	if (tray != NULL)
+	{
+		::ShowWindow(tray, SW_SHOW);
+	}
+}
+
+
+void CDesktopDlg::OnBnClickedButton7()
+{
+	HWND tray = ::FindWindow(TEXT("Shell_traywnd"), NULL);
+
+	if (tray != NULL)
+	{
+		HWND trayNotifyHwnd = ::FindWindowEx(tray, NULL, TEXT("TrayNotifyWnd"), NULL);
+
+		if (trayNotifyHwnd != NULL)
+		{
+			HWND trayClock = ::FindWindowEx(trayNotifyHwnd, NULL, TEXT("TrayClockWClass"), NULL);
+
+			if (trayClock != NULL)
+			{
+				::ShowWindow(trayClock, SW_HIDE);
+			}
+		}
+	}
+}
+
+
+void CDesktopDlg::OnBnClickedButton8()
+{
+	HWND tray = ::FindWindow(TEXT("Shell_traywnd"), NULL);
+
+	if (tray != NULL)
+	{
+		HWND trayNotifyHwnd = ::FindWindowEx(tray, NULL, TEXT("TrayNotifyWnd"), NULL);
+
+		if (trayNotifyHwnd != NULL)
+		{
+			HWND trayClock = ::FindWindowEx(trayNotifyHwnd, NULL, TEXT("TrayClockWClass"), NULL);
+
+			if (trayClock != NULL)
+			{
+				::ShowWindow(trayClock, SW_SHOW);
+			}
+		}
+	}
+}
+
+
+void CDesktopDlg::OnBnClickedButton9()
+{
+	HWND progManHwnd = ::FindWindow(TEXT("ProgMan"), NULL);
+	if (progManHwnd != NULL)
+	{
+		HWND defViewHwnd = ::GetWindow(progManHwnd, GW_CHILD);
+
+		if (defViewHwnd != NULL)
+		{
+			HWND listView32Hwnd = ::GetWindow(defViewHwnd, GW_CHILD);
+
+			LPTSTR buf = new TCHAR[128];
+			//The length of the lpClassName buffer, in characters. The buffer must be large enough to include the terminating null character; otherwise, the class name string is truncated to nMaxCount-1 characters.
+			::GetClassName(listView32Hwnd, buf, 127);
+
+			if (StrCmpCW(buf, TEXT("SysListView32")) == 0)
+			{
+				AfxMessageBox(TEXT("Success"));
+			}
+
+			delete[] buf;
+			
+		}
+	}
+}
