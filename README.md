@@ -7,7 +7,9 @@ Windows programming sample code
 * Windows 10 1703+
 
 ## Code list 
-* Disk Driver
+* Disk
+* Desktop
+* ClipBoard
 
 ## Licenses
 [MIT](LICENSE)
