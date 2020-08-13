@@ -38,4 +38,6 @@ public:
 
 public:
 	CString GetClipBoardFormat(int index);
+	afx_msg void OnBnClickedButton2();
+	CButton m_picture;
 };

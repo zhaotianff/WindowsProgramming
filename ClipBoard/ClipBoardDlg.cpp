@@ -60,6 +60,7 @@ void CClipBoardDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_LIST1, m_list);
+	DDX_Control(pDX, IDCANCEL, m_picture);
 }
 
 BEGIN_MESSAGE_MAP(CClipBoardDlg, CDialogEx)
@@ -68,6 +69,7 @@ BEGIN_MESSAGE_MAP(CClipBoardDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDOK, &CClipBoardDlg::OnBnClickedOk)
 	ON_BN_CLICKED(IDC_BUTTON1, &CClipBoardDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON2, &CClipBoardDlg::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 
@@ -162,7 +164,7 @@ void CClipBoardDlg::OnBnClickedOk()
 {
 	//https://docs.microsoft.com/en-us/windows/win32/dataxchg/clipboard
 
-	m_list.ResetContent();
+	
 
 	
 }
@@ -275,4 +277,33 @@ CString CClipBoardDlg::GetClipBoardFormat(int index)
 	}
 
 	return format;
+}
+
+
+void CClipBoardDlg::OnBnClickedButton2()
+{
+	OPENFILENAME ofn;   
+	TCHAR szFile[260]{};
+
+	ZeroMemory(&ofn, sizeof(ofn));
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = GetSafeHwnd();
+	ofn.lpstrFile = szFile;
+	ofn.nMaxFile = sizeof(szFile);
+	ofn.lpstrFilter = _T("图像\0*.bmp\0");
+	ofn.nFilterIndex = 1;
+	ofn.lpstrFileTitle = NULL;
+	ofn.nMaxFileTitle = 0;
+	ofn.lpstrInitialDir = NULL;
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST;
+
+	if (GetOpenFileName(&ofn) == TRUE)
+	{
+		HANDLE hBMP = LoadImage(NULL,ofn.lpstrFile, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+
+		::OpenClipboard(GetSafeHwnd());
+		::EmptyClipboard();
+		::SetClipboardData(CF_BITMAP, hBMP);
+		::CloseClipboard();
+	}
 }
