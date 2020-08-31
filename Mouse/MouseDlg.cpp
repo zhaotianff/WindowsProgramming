@@ -65,6 +65,9 @@ BEGIN_MESSAGE_MAP(CMouseDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_BUTTON1, &CMouseDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON2, &CMouseDlg::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON3, &CMouseDlg::OnBnClickedButton3)
 END_MESSAGE_MAP()
 
 
@@ -153,3 +156,23 @@ HCURSOR CMouseDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);
 }
 
+
+
+void CMouseDlg::OnBnClickedButton1()
+{
+	SwapMouseButton(TRUE);
+}
+
+
+void CMouseDlg::OnBnClickedButton2()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	SwapMouseButton(FALSE);
+}
+
+
+void CMouseDlg::OnBnClickedButton3()
+{
+	// TODO: 在此添加控件通知处理程序代码
+
+}
