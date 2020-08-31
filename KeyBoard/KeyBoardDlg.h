@@ -34,4 +34,6 @@ protected:
 public:
 	afx_msg void OnBnClickedOk();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+
+	void ShowLockStatus(BOOL isFirst);
 };

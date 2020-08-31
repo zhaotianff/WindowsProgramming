@@ -101,6 +101,7 @@ BOOL CKeyBoardDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
+	ShowLockStatus(TRUE);
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -178,7 +179,56 @@ BOOL CKeyBoardDlg::PreTranslateMessage(MSG* pMsg)
 
 		wsprintf(strName, TEXT("%d"), MapVirtualKey(HIWORD(pMsg->lParam),3));
 		GetDlgItem(IDC_EDIT3)->SetWindowText(strName);
+
+		ShowLockStatus(FALSE);
 	}
 
 	return CDialogEx::PreTranslateMessage(pMsg);
+}
+
+void CKeyBoardDlg::ShowLockStatus(BOOL isFirst)
+{
+	//If the high-order bit is 1, the key is down; otherwise, it is up.
+	//SHORT 16 bits	
+	//0x8000 1000 0000 0000 0000
+
+	if (isFirst)
+	{
+		if (GetKeyState(VK_CAPITAL) != 0)
+		{
+			((CButton*)GetDlgItem(IDC_RADIO1))->SetCheck(TRUE);
+		}
+
+
+		WORD w = GetKeyState(VK_NUMLOCK);
+		if (GetKeyState(VK_NUMLOCK) != 0)
+		{
+			((CButton*)GetDlgItem(IDC_RADIO2))->SetCheck(TRUE);
+		}
+
+		if (GetKeyState(VK_SCROLL) != 0) 
+		{
+			((CButton*)GetDlgItem(IDC_RADIO3))->SetCheck(TRUE);
+		}
+	}
+	else
+	{
+		if ((GetKeyState(VK_CAPITAL) & 0x8000))
+		{
+			CButton* radio1 = ((CButton*)GetDlgItem(IDC_RADIO1));
+			radio1->GetCheck() == TRUE ? radio1->SetCheck(FALSE) : radio1->SetCheck(TRUE);
+		}
+
+		if (GetKeyState(VK_NUMLOCK) & 0x8000)
+		{
+			CButton* radio2 = ((CButton*)GetDlgItem(IDC_RADIO2));
+			radio2->GetCheck() == TRUE ? radio2->SetCheck(FALSE) : radio2->SetCheck(TRUE);
+		}
+
+		if (GetKeyState(VK_SCROLL) & 0x8000)
+		{
+			CButton* radio3 = ((CButton*)GetDlgItem(IDC_RADIO3));
+			radio3->GetCheck() == TRUE ? radio3->SetCheck(FALSE) : radio3->SetCheck(TRUE);
+		}
+	}
 }
