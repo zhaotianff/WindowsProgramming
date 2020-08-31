@@ -66,6 +66,10 @@ BEGIN_MESSAGE_MAP(CKeyBoardDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDOK, &CKeyBoardDlg::OnBnClickedOk)
+	ON_BN_CLICKED(IDC_BUTTON1, &CKeyBoardDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON2, &CKeyBoardDlg::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON3, &CKeyBoardDlg::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON4, &CKeyBoardDlg::OnBnClickedButton4)
 END_MESSAGE_MAP()
 
 
@@ -101,7 +105,7 @@ BOOL CKeyBoardDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
-	ShowLockStatus(TRUE);
+	ShowLockStatus();
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -180,55 +184,146 @@ BOOL CKeyBoardDlg::PreTranslateMessage(MSG* pMsg)
 		wsprintf(strName, TEXT("%d"), MapVirtualKey(HIWORD(pMsg->lParam),3));
 		GetDlgItem(IDC_EDIT3)->SetWindowText(strName);
 
-		ShowLockStatus(FALSE);
+		ShowLockStatus();
 	}
 
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
 
-void CKeyBoardDlg::ShowLockStatus(BOOL isFirst)
+void CKeyBoardDlg::ShowLockStatus()
 {
 	//If the high-order bit is 1, the key is down; otherwise, it is up.
 	//SHORT 16 bits	
 	//0x8000 1000 0000 0000 0000
-
-	if (isFirst)
+	
+	/*if (GetKeyState(VK_CAPITAL) != 0)
 	{
-		if (GetKeyState(VK_CAPITAL) != 0)
-		{
-			((CButton*)GetDlgItem(IDC_RADIO1))->SetCheck(TRUE);
-		}
+		((CButton*)GetDlgItem(IDC_RADIO1))->SetCheck(TRUE);
+	}
 
+	if (GetKeyState(VK_NUMLOCK) != 0)
+	{
+		((CButton*)GetDlgItem(IDC_RADIO2))->SetCheck(TRUE);
+	}
 
-		WORD w = GetKeyState(VK_NUMLOCK);
-		if (GetKeyState(VK_NUMLOCK) != 0)
-		{
-			((CButton*)GetDlgItem(IDC_RADIO2))->SetCheck(TRUE);
-		}
+	if (GetKeyState(VK_SCROLL) != 0) 
+	{
+		((CButton*)GetDlgItem(IDC_RADIO3))->SetCheck(TRUE);
+	}*/
 
-		if (GetKeyState(VK_SCROLL) != 0) 
-		{
-			((CButton*)GetDlgItem(IDC_RADIO3))->SetCheck(TRUE);
-		}
+	BYTE keyState[256];
+	GetKeyboardState((LPBYTE)keyState);
+
+	if (keyState[VK_CAPITAL] & 1)
+	{
+		((CButton*)GetDlgItem(IDC_RADIO1))->SetCheck(TRUE);
 	}
 	else
 	{
-		if ((GetKeyState(VK_CAPITAL) & 0x8000))
-		{
-			CButton* radio1 = ((CButton*)GetDlgItem(IDC_RADIO1));
-			radio1->GetCheck() == TRUE ? radio1->SetCheck(FALSE) : radio1->SetCheck(TRUE);
-		}
-
-		if (GetKeyState(VK_NUMLOCK) & 0x8000)
-		{
-			CButton* radio2 = ((CButton*)GetDlgItem(IDC_RADIO2));
-			radio2->GetCheck() == TRUE ? radio2->SetCheck(FALSE) : radio2->SetCheck(TRUE);
-		}
-
-		if (GetKeyState(VK_SCROLL) & 0x8000)
-		{
-			CButton* radio3 = ((CButton*)GetDlgItem(IDC_RADIO3));
-			radio3->GetCheck() == TRUE ? radio3->SetCheck(FALSE) : radio3->SetCheck(TRUE);
-		}
+		((CButton*)GetDlgItem(IDC_RADIO1))->SetCheck(FALSE);
 	}
+	
+	if (keyState[VK_NUMLOCK] & 1)
+	{
+		((CButton*)GetDlgItem(IDC_RADIO2))->SetCheck(TRUE);
+	}
+	else
+	{
+		((CButton*)GetDlgItem(IDC_RADIO2))->SetCheck(FALSE);
+	}
+
+	if (keyState[VK_SCROLL] & 1)
+	{
+		((CButton*)GetDlgItem(IDC_RADIO3))->SetCheck(TRUE);
+	}
+	else
+	{
+		((CButton*)GetDlgItem(IDC_RADIO3))->SetCheck(FALSE);
+	}
+}
+
+void CKeyBoardDlg::EmuKeyStroke(WORD wVk, WORD wScan)
+{
+	INPUT input{};
+
+	input.type = INPUT_KEYBOARD;
+	input.ki.wScan = wScan;
+	input.ki.time = 0;
+	input.ki.dwExtraInfo = 0;
+	input.ki.wVk = wVk;
+	input.ki.dwFlags = 0;
+
+	SendInput(1, &input, sizeof(INPUT));
+
+	input.ki.dwFlags = KEYEVENTF_KEYUP;
+	SendInput(1, &input, sizeof(INPUT));
+}
+
+
+void CKeyBoardDlg::OnBnClickedButton1()
+{
+	//keybd_event(VK_CAPITAL, 0x45, KEYEVENTF_EXTENDEDKEY | 0, 0);
+	//keybd_event(VK_CAPITAL, 0x45, KEYEVENTF_EXTENDEDKEY | KEYEVENTF_KEYUP, 0);
+	//use SendInput instead
+	EmuKeyStroke(VK_CAPITAL, 0x3a);
+}
+
+
+void CKeyBoardDlg::OnBnClickedButton2()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	EmuKeyStroke(VK_NUMLOCK, 0x45);
+}
+
+
+void CKeyBoardDlg::OnBnClickedButton3()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	EmuKeyStroke(VK_SCROLL, 0x46);
+}
+
+
+void CKeyBoardDlg::OnBnClickedButton4()
+{
+	/*keybd_event(VK_MENU, 0, 0, 0);
+	keybd_event(VK_CONTROL, 0, 0, 0);
+	keybd_event(VK_TAB, 0, 0, 0);
+
+	keybd_event(VK_MENU, 0, KEYEVENTF_KEYUP, 0);
+	keybd_event(VK_CONTROL, 0, KEYEVENTF_KEYUP, 0);
+	keybd_event(VK_TAB, 0, KEYEVENTF_KEYUP, 0);*/
+
+	//SendInput
+	INPUT inputs[3]{};
+
+	inputs[0].type = INPUT_KEYBOARD;
+	inputs[0].ki.wScan = 0;
+	inputs[0].ki.time = 0;
+	inputs[0].ki.dwExtraInfo = 0;
+	inputs[0].ki.wVk = VK_MENU;
+	inputs[0].ki.dwFlags = 0;
+
+	inputs[1] = inputs[0];
+	inputs[2] = inputs[0];
+
+	inputs[1].ki.wVk = VK_CONTROL;
+	inputs[2].ki.wVk = VK_TAB;
+
+	SendInput(3, inputs, sizeof(INPUT));
+
+	inputs[0].ki.dwFlags = KEYEVENTF_KEYUP;
+	inputs[1].ki.dwFlags = KEYEVENTF_KEYUP;
+	inputs[2].ki.dwFlags = KEYEVENTF_KEYUP;
+	SendInput(3, inputs, sizeof(INPUT));
+
+	Sleep(2000);
+
+	//关闭切换界面
+	inputs[0].ki.dwFlags = 0;
+	inputs[0].ki.wVk = VK_ESCAPE;
+	SendInput(1, &inputs[0], sizeof(INPUT));
+
+	inputs[0].ki.dwFlags = KEYEVENTF_KEYUP;
+	inputs[0].ki.wVk = VK_ESCAPE;
+	SendInput(1, &inputs[0], sizeof(INPUT));
 }

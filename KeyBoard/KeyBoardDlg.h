@@ -35,5 +35,10 @@ public:
 	afx_msg void OnBnClickedOk();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
-	void ShowLockStatus(BOOL isFirst);
+	void ShowLockStatus();
+	void EmuKeyStroke(WORD wVk,WORD wScan);
+	afx_msg void OnBnClickedButton1();
+	afx_msg void OnBnClickedButton2();
+	afx_msg void OnBnClickedButton3();
+	afx_msg void OnBnClickedButton4();
 };
