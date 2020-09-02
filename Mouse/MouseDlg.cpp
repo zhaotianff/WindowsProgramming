@@ -173,6 +173,6 @@ void CMouseDlg::OnBnClickedButton2()
 
 void CMouseDlg::OnBnClickedButton3()
 {
-	// TODO: 在此添加控件通知处理程序代码
+
 
 }
