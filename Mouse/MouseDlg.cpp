@@ -176,3 +176,38 @@ void CMouseDlg::OnBnClickedButton3()
 
 
 }
+
+
+BOOL CMouseDlg::PreTranslateMessage(MSG* pMsg)
+{
+	// TODO: 在此添加专用代码和/或调用基类
+	if (pMsg->message == WM_LBUTTONDOWN)
+	{
+		//按钮按下
+		if (pMsg->hwnd == GetDlgItem(IDC_BUTTON3)->m_hWnd)
+		{
+
+		}
+	}
+
+	if (pMsg->message == WM_MOUSEMOVE)
+	{
+		//鼠标移动
+		if (pMsg->hwnd == GetDlgItem(IDC_BUTTON3)->m_hWnd)
+		{
+
+		}
+	}
+
+	if (pMsg->message == WM_LBUTTONUP)
+	{
+		//按钮松开
+		if (pMsg->hwnd == GetDlgItem(IDC_BUTTON3)->m_hWnd)
+		{
+
+		}
+	}
+
+
+	return CDialogEx::PreTranslateMessage(pMsg);
+}
