@@ -68,6 +68,9 @@ BEGIN_MESSAGE_MAP(CMouseDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1, &CMouseDlg::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &CMouseDlg::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON3, &CMouseDlg::OnBnClickedButton3)
+	ON_WM_MOUSEMOVE()
+	ON_WM_LBUTTONDOWN()
+	ON_WM_LBUTTONUP()
 END_MESSAGE_MAP()
 
 
@@ -179,35 +182,122 @@ void CMouseDlg::OnBnClickedButton3()
 
 
 BOOL CMouseDlg::PreTranslateMessage(MSG* pMsg)
-{
-	// TODO: 在此添加专用代码和/或调用基类
+{	
 	if (pMsg->message == WM_LBUTTONDOWN)
 	{
-		//按钮按下
-		if (pMsg->hwnd == GetDlgItem(IDC_BUTTON3)->m_hWnd)
+		if (pMsg->hwnd != NULL && pMsg->hwnd == GetDlgItem(IDC_BUTTON3)->GetSafeHwnd())
 		{
+			SetCapture();
+			capture = TRUE;
+		}
+	}
+	
+	if (pMsg->message == WM_LBUTTONUP)
+	{
+		if (pMsg->hwnd != NULL && pMsg->hwnd == GetDlgItem(IDC_BUTTON3)->GetSafeHwnd())
+		{
+			ReleaseCapture();
+			capture = FALSE;
 
+			if (m_hWndPrevious != NULL)
+			{
+				CRect rect;
+			    hPen = CreatePen(PS_INSIDEFRAME, 1 * GetSystemMetrics(SM_CXBORDER), RGB(255, 255, 255));
+				::GetWindowRect(m_hWndPrevious, &rect);
+				hdc = ::GetWindowDC(m_hWndPrevious);
+				//sets the current foreground mix mode.
+				//R2_NOT Pixel is the inverse of the screen color. 
+				SetROP2(hdc, R2_NOT);
+				hOldBrush = (HBRUSH)SelectObject(hdc, GetStockObject(NULL_BRUSH));
+				hOldPen = (HPEN)SelectObject(hdc, hPen);
+				SelectObject(hdc, hOldBrush);
+
+				::ReleaseDC(m_hWndPrevious,hdc);
+				DeleteObject(hOldPen);
+				DeleteObject(hPen);
+				DeleteObject(hOldBrush);
+				m_hWndPrevious = NULL;
+			}
+			::InvalidateRect(NULL, NULL, FALSE);
 		}
 	}
 
 	if (pMsg->message == WM_MOUSEMOVE)
 	{
-		//鼠标移动
-		if (pMsg->hwnd == GetDlgItem(IDC_BUTTON3)->m_hWnd)
+		if (capture)
 		{
+			CRect rect;
+			ClientToScreen(&rect);
+			HWND hwnd = ::WindowFromPoint(pMsg->pt);
+            hPen = CreatePen(PS_INSIDEFRAME, 1 * GetSystemMetrics(SM_CXBORDER), RGB(255, 255, 255));
+			TCHAR buf[512];
 
+			if (hwnd != m_hWndPrevious)
+			{
+				::GetWindowRect(m_hWndPrevious, &rect);
+				hdc = ::GetWindowDC(m_hWndPrevious);
+				SetROP2(hdc, R2_NOT);
+				hOldBrush = (HBRUSH)SelectObject(hdc, GetStockObject(NULL_BRUSH));
+				hOldPen = (HPEN)SelectObject(hdc, hPen);
+				Rectangle(hdc, 0, 0, rect.right - rect.left, rect.bottom - rect.top);
+				SelectObject(hdc, hOldPen);
+				SelectObject(hdc, hOldBrush);
+				//::ReleaseDC(hwnd, hdc);
+				//DeleteObject(hPen);
+				//DeleteObject(hOldPen);
+				//DeleteObject(hOldBrush);
+
+				m_hWndPrevious = hwnd;
+				::GetWindowRect(m_hWndPrevious, &rect);
+				hdc = ::GetWindowDC(m_hWndPrevious);
+				hOldBrush = (HBRUSH)SelectObject(hdc, GetStockObject(NULL_BRUSH));
+				SetROP2(hdc, R2_NOT);
+				hOldPen = (HPEN)SelectObject(hdc, hPen);
+				Rectangle(hdc, 0, 0, rect.right - rect.left, rect.bottom - rect.top);
+				SelectObject(hdc, hOldPen);
+				SelectObject(hdc, hOldBrush);
+
+				::ReleaseDC(m_hWndPrevious, hdc);
+				DeleteObject(hPen);
+				DeleteObject(hOldPen);
+				DeleteObject(hOldBrush);
+			}
+
+			if (hwnd != NULL)
+			{
+				CString str;
+				str.Format(TEXT("0x%0xX"), hwnd);
+				GetDlgItem(IDC_EDIT2)->SetWindowText(str);
+
+				
+				::GetWindowText(hwnd, buf, 512);
+				GetDlgItem(IDC_EDIT3)->SetWindowText(buf);
+
+				::GetClassName(hwnd, buf, 512);
+				GetDlgItem(IDC_EDIT4)->SetWindowText(buf);
+			}
 		}
 	}
-
-	if (pMsg->message == WM_LBUTTONUP)
-	{
-		//按钮松开
-		if (pMsg->hwnd == GetDlgItem(IDC_BUTTON3)->m_hWnd)
-		{
-
-		}
-	}
-
-
 	return CDialogEx::PreTranslateMessage(pMsg);
+}
+
+
+void CMouseDlg::OnMouseMove(UINT nFlags, CPoint point)
+{
+	CDialogEx::OnMouseMove(nFlags, point);
+}
+
+
+void CMouseDlg::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+
+	CDialogEx::OnLButtonDown(nFlags, point);
+}
+
+
+void CMouseDlg::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	// TODO: 在此添加消息处理程序代码和/或调用默认值
+	CDialogEx::OnLButtonUp(nFlags, point);
 }

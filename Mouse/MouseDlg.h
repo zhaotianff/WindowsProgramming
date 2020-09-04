@@ -36,4 +36,16 @@ public:
 	afx_msg void OnBnClickedButton2();
 	afx_msg void OnBnClickedButton3();
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
+
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+
+public:
+	BOOL capture;
+	HWND m_hWndPrevious;
+	HPEN hOldPen;
+	HDC hdc;
+	HBRUSH hOldBrush;
+	HPEN hPen;
 };
