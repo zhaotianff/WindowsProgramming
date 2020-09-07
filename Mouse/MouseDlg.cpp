@@ -229,25 +229,26 @@ BOOL CMouseDlg::PreTranslateMessage(MSG* pMsg)
 			CRect rect;
 			ClientToScreen(&rect);
 			HWND hwnd = ::WindowFromPoint(pMsg->pt);
-            hPen = CreatePen(PS_INSIDEFRAME, 1 * GetSystemMetrics(SM_CXBORDER), RGB(255, 255, 255));
+			//GDI对象释放还有点问题
+            //hPen = CreatePen(PS_INSIDEFRAME, 1 * GetSystemMetrics(SM_CXBORDER), RGB(255, 255, 255));
 			TCHAR buf[512];
 
 			if (hwnd != m_hWndPrevious)
 			{
-				::GetWindowRect(m_hWndPrevious, &rect);
+				/*::GetWindowRect(m_hWndPrevious, &rect);
 				hdc = ::GetWindowDC(m_hWndPrevious);
 				SetROP2(hdc, R2_NOT);
 				hOldBrush = (HBRUSH)SelectObject(hdc, GetStockObject(NULL_BRUSH));
 				hOldPen = (HPEN)SelectObject(hdc, hPen);
 				Rectangle(hdc, 0, 0, rect.right - rect.left, rect.bottom - rect.top);
 				SelectObject(hdc, hOldPen);
-				SelectObject(hdc, hOldBrush);
+				SelectObject(hdc, hOldBrush);*/
 				//::ReleaseDC(hwnd, hdc);
 				//DeleteObject(hPen);
 				//DeleteObject(hOldPen);
 				//DeleteObject(hOldBrush);
 
-				m_hWndPrevious = hwnd;
+				/*m_hWndPrevious = hwnd;
 				::GetWindowRect(m_hWndPrevious, &rect);
 				hdc = ::GetWindowDC(m_hWndPrevious);
 				hOldBrush = (HBRUSH)SelectObject(hdc, GetStockObject(NULL_BRUSH));
@@ -260,7 +261,7 @@ BOOL CMouseDlg::PreTranslateMessage(MSG* pMsg)
 				::ReleaseDC(m_hWndPrevious, hdc);
 				DeleteObject(hPen);
 				DeleteObject(hOldPen);
-				DeleteObject(hOldBrush);
+				DeleteObject(hOldBrush);*/
 			}
 
 			if (hwnd != NULL)
