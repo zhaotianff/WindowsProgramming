@@ -48,4 +48,6 @@ public:
 	HDC hdc;
 	HBRUSH hOldBrush;
 	HPEN hPen;
+	afx_msg void OnBnClickedButton4();
+	afx_msg void OnBnClickedButton5();
 };

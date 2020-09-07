@@ -71,6 +71,8 @@ BEGIN_MESSAGE_MAP(CMouseDlg, CDialogEx)
 	ON_WM_MOUSEMOVE()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
+	ON_BN_CLICKED(IDC_BUTTON4, &CMouseDlg::OnBnClickedButton4)
+	ON_BN_CLICKED(IDC_BUTTON5, &CMouseDlg::OnBnClickedButton5)
 END_MESSAGE_MAP()
 
 
@@ -301,4 +303,41 @@ void CMouseDlg::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	// TODO: 在此添加消息处理程序代码和/或调用默认值
 	CDialogEx::OnLButtonUp(nFlags, point);
+}
+
+
+void CMouseDlg::OnBnClickedButton4()
+{
+	//移动鼠标打开开始菜单
+
+	int height = GetSystemMetrics(SM_CYSCREEN);
+
+	POINT p{};
+	GetCursorPos(&p);
+
+	INPUT input{};
+	input.mi.dx = p.x;
+	input.mi.dy = p.y;
+	input.mi.dwFlags = MOUSEEVENTF_LEFTDOWN;
+	input.mi.mouseData = XBUTTON1;
+	
+	SetCursorPos(10, height-10);
+	SendInput(1, &input, sizeof(input));
+	input.mi.dwFlags = MOUSEEVENTF_LEFTUP;
+	SendInput(1, &input, sizeof(input));
+
+
+}
+
+
+void CMouseDlg::OnBnClickedButton5()
+{
+	/*BOOL ListView_GetItem(
+		HWND hwnd,
+		LVITEM FAR* pitem
+	);*/
+
+	HWND hWndProgman = ::FindWindow(TEXT("Progman"), NULL);
+	HWND hWndSHELLDLL_DefView = ::FindWindowEx(hWndProgman, NULL, TEXT("SHELLDLL_DefView"),NULL);
+	HWND hWndSysListView32 = ::FindWindowEx(hWndSHELLDLL_DefView, NULL, TEXT("SysListView32"), NULL);
 }
