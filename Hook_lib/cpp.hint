@@ -1,0 +1,2 @@
+#define HOOKLIB_API __declspec(dllexport)
+#define HOOKLIB_API __declspec(dllimport)
