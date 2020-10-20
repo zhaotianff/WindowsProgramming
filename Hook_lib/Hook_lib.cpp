@@ -17,7 +17,50 @@ HHOOK g_hHook = NULL;
 // 钩子回调函数
 LRESULT GetMsgProc(int code, WPARAM wParam, LPARAM lParam)
 {
-	
+	//If code is less than zero, the hook procedure must return the value returned by CallNextHookEx.
+
+	//If code is greater than or equal to zero, it is highly recommended that you call CallNextHookEx and return the value it returns;
+	//otherwise, other applications that have installed WH_GETMESSAGE hooks will not receive hook notifications and may behave incorrectly as a result.
+	//If the hook procedure does not call CallNextHookEx, the return value should be zero.
+
+	if (code == HC_ACTION)
+	{
+		PMSG msg = (PMSG)lParam;
+		return TRUE;
+	}
+	else
+	{
+		return CallNextHookEx(g_hHook, code, wParam, lParam);
+	}	
+
+
+	/*
+	*键盘钩子
+	BOOL fEatKeystroke = FALSE;
+	PKBDLLHOOKSTRUCT p = NULL;
+
+	if (nCode == HC_ACTION)
+	{
+		p = (PKBDLLHOOKSTRUCT)lParam;
+		switch (wParam)
+		{
+		case WM_KEYDOWN:
+		case WM_SYSKEYDOWN:
+		case WM_KEYUP:
+		case WM_SYSKEYUP:
+			fEatKeystroke = (p->vkCode == VK_LWIN) || (p->vkCode == VK_RWIN) ||         // 屏蔽Win
+				((p->vkCode == VK_TAB) && ((p->flags & LLKHF_ALTDOWN) != 0)) ||         // 屏蔽Alt+Tab
+				((p->vkCode == VK_ESCAPE) && ((p->flags & LLKHF_ALTDOWN) != 0)) ||		// 屏蔽Alt+Esc
+				((p->vkCode == VK_F4) && ((p->flags & LLKHF_ALTDOWN) != 0)) ||          // 屏蔽Alt+F4
+				((p->vkCode == VK_ESCAPE) && ((GetKeyState(VK_CONTROL) & 0x8000) != 0));// 屏蔽Ctrl+Esc
+			break;
+		default:
+			break;
+		}
+	}
+
+	return (fEatKeystroke ? TRUE : CallNextHookEx(g_lhHook, nCode, wParam, lParam));
+	*/
 }
 
 HOOKLIB_API BOOL SetHook()
@@ -48,7 +91,10 @@ HOOKLIB_API BOOL SetHook()
 
 HOOKLIB_API BOOL UnsetHook()
 {
-	return TRUE;
+	if (g_hHook)
+		return UnhookWindowsHookEx(g_hHook);
+
+	return FALSE;
 }
 
 

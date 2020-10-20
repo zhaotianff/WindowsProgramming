@@ -4,6 +4,9 @@
 
 #pragma once
 
+typedef BOOL (*SetHook)();
+typedef BOOL(*UnSetHook)();
+
 
 // CHookDlg 对话框
 class CHookDlg : public CDialogEx
@@ -33,4 +36,11 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedOk();
+	afx_msg void OnBnClickedButton1();
+
+private:
+	SetHook m_fSetHook;
+	UnSetHook m_fUnSetHook;
+public:
+	afx_msg void OnBnClickedButton2();
 };

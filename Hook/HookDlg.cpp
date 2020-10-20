@@ -54,6 +54,9 @@ CHookDlg::CHookDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_HOOK_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+
+	m_fSetHook = nullptr;
+	m_fUnSetHook = nullptr;
 }
 
 void CHookDlg::DoDataExchange(CDataExchange* pDX)
@@ -66,6 +69,8 @@ BEGIN_MESSAGE_MAP(CHookDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDOK, &CHookDlg::OnBnClickedOk)
+	ON_BN_CLICKED(IDC_BUTTON1, &CHookDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON2, &CHookDlg::OnBnClickedButton2)
 END_MESSAGE_MAP()
 
 
@@ -101,6 +106,12 @@ BOOL CHookDlg::OnInitDialog()
 	SetIcon(m_hIcon, FALSE);		// 设置小图标
 
 	// TODO: 在此添加额外的初始化代码
+	HINSTANCE hHookLib = LoadLibrary(L"HookLib.dll");
+	if (hHookLib)
+	{
+		m_fSetHook = (SetHook)GetProcAddress(hHookLib, "SetHook");
+		m_fUnSetHook = (UnSetHook)GetProcAddress(hHookLib, "UnsetHook");
+	}
 
 	return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -160,4 +171,24 @@ void CHookDlg::OnBnClickedOk()
 {
 	// TODO: 在此添加控件通知处理程序代码
 	CDialogEx::OnOK();
+}
+
+
+void CHookDlg::OnBnClickedButton1()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	if (m_fSetHook)
+	{
+		m_fSetHook();
+	}
+}
+
+
+void CHookDlg::OnBnClickedButton2()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	if (m_fUnSetHook)
+	{
+		m_fUnSetHook();
+	}
 }
