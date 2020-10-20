@@ -31,6 +31,7 @@ Windows programming sample code
   * 模拟鼠标操作
   * 获取鼠标下窗体信息
 * [钩子](https://github.com/zhaotianff/WindowsProgramming/tree/master/Hook)
-
+  * 监视发送到消息队列的消息
+  * 监视低级键盘输入事件
 ## Licenses
 [MIT](LICENSE)
