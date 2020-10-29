@@ -65,6 +65,7 @@ BEGIN_MESSAGE_MAP(CMessageDlg, CDialogEx)
 	ON_WM_SYSCOMMAND()
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
+	ON_BN_CLICKED(IDC_BUTTON1, &CMessageDlg::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 
@@ -153,3 +154,15 @@ HCURSOR CMessageDlg::OnQueryDragIcon()
 	return static_cast<HCURSOR>(m_hIcon);	
 }
 
+
+
+void CMessageDlg::OnBnClickedButton1()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	HWND hwnd = ::FindWindow(L"CabinetWClass", NULL);
+
+	if (hwnd)
+	{
+		::SendMessage(hwnd,WM_CLOSE,NULL,NULL);
+	}
+}
