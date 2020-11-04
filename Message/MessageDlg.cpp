@@ -59,6 +59,7 @@ CMessageDlg::CMessageDlg(CWnd* pParent /*=nullptr*/)
 void CMessageDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_EDIT2, m_editText);
 }
 
 BEGIN_MESSAGE_MAP(CMessageDlg, CDialogEx)
@@ -66,6 +67,8 @@ BEGIN_MESSAGE_MAP(CMessageDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON1, &CMessageDlg::OnBnClickedButton1)
+	ON_BN_CLICKED(IDC_BUTTON2, &CMessageDlg::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON3, &CMessageDlg::OnBnClickedButton3)
 END_MESSAGE_MAP()
 
 
@@ -164,5 +167,48 @@ void CMessageDlg::OnBnClickedButton1()
 	if (hwnd)
 	{
 		::SendMessage(hwnd,WM_CLOSE,NULL,NULL);
+	}
+}
+
+
+void CMessageDlg::OnBnClickedButton2()
+{
+	// TODO: 在此添加控件通知处理程序代码
+	
+	TCHAR buf[520]{};
+
+	//获取第一个资源管理器窗口
+	HWND hwnd = ::FindWindow(L"CabinetWClass", NULL);
+	if (hwnd)
+	{
+		::SendMessage(hwnd, WM_GETTEXT, (WPARAM)520, (LPARAM)buf);
+		((CEdit*)GetDlgItem(IDC_EDIT1))->SetWindowTextW(buf);
+	}
+	else
+	{
+		AfxMessageBox(L"没有资源管理器窗口");
+	}
+}
+
+
+void CMessageDlg::OnBnClickedButton3()
+{
+	// TODO: 在此添加控件通知处理程序代码
+
+	HWND hwnd = ::FindWindow(L"CabinetWClass", NULL);
+
+
+	if (hwnd)
+	{
+		TCHAR buf[520]{};
+		m_editText.GetWindowTextW(buf, 520);
+
+		::SendMessage(hwnd, WM_SETTEXT, (WPARAM)0, (LPARAM)buf);
+
+		OnBnClickedButton2();
+	}
+	else
+	{
+		AfxMessageBox(L"没有资源管理器窗口");
 	}
 }
