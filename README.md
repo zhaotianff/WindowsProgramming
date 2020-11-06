@@ -1,9 +1,9 @@
 # WindowsProgramming
-Windows programming sample code
+Windows programming demo
 
 ## 开发环境
-* Visual Studio 2017+
-* VC++ v141 toolset+  
+* Visual Studio 2019
+* VC++ v142 toolset  
 * Windows 10 1703+
 
 ## 代码列表
@@ -33,5 +33,6 @@ Windows programming sample code
 * [钩子](https://github.com/zhaotianff/WindowsProgramming/tree/master/Hook)
   * 监视发送到消息队列的消息
   * 监视低级键盘输入事件
+* [消息](https://github.com/zhaotianff/WindowsProgramming/tree/master/Message)
 ## Licenses
 [MIT](LICENSE)
