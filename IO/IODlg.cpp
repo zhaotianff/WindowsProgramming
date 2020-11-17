@@ -189,5 +189,5 @@ void CIODlg::OnBnClickedButton1()
 
 void CIODlg::OnBnClickedButton2()
 {
-	
+	//CreateFile
 }
