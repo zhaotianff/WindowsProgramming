@@ -34,5 +34,7 @@ Windows programming demo
   * 监视发送到消息队列的消息
   * 监视低级键盘输入事件
 * [消息](https://github.com/zhaotianff/WindowsProgramming/tree/master/Message)
+* [IO](https://github.com/zhaotianff/WindowsProgramming/tree/master/IO)
+* [通用对话框](https://github.com/zhaotianff/WindowsProgramming/tree/master/CommonDlg)
 ## Licenses
 [MIT](LICENSE)
