@@ -69,6 +69,7 @@ BEGIN_MESSAGE_MAP(CCommonDlgDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1, &CCommonDlgDlg::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &CCommonDlgDlg::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON3, &CCommonDlgDlg::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON4, &CCommonDlgDlg::OnBnClickedButton4)
 END_MESSAGE_MAP()
 
 
@@ -298,4 +299,27 @@ void CCommonDlgDlg::OnBnClickedButton3()
 	{
 		// check paper size and margin values here.
 	}
+}
+
+
+void CCommonDlgDlg::OnBnClickedButton4()
+{
+	OPENFILENAME ofn{};
+	TCHAR szFile[260]{};       //文件名缓冲区
+
+	ofn.lStructSize = sizeof(ofn);
+	ofn.hwndOwner = NULL; //设置对话框拥有者句柄
+	ofn.lpstrFile = szFile; //设置文件名缓冲区
+	ofn.lpstrFile[0] = '\0';
+	ofn.nMaxFile = sizeof(szFile); //设置所选文件路径缓冲区最大长度
+	ofn.lpstrFilter = L"全部文件\0*.*\0文本文件\0*.txt\0";  //指定文件类型
+	ofn.nFilterIndex = 1;  //文件类型选中的索引 从1开始
+	ofn.lpstrFileTitle = NULL;  //选中的文件名（不包含路径，包含扩展名）
+	ofn.nMaxFileTitle = 0;  //选中的文件名缓冲区最大长度
+	ofn.lpstrInitialDir = NULL;  //初始路径
+	ofn.Flags = OFN_PATHMUSTEXIST | OFN_FILEMUSTEXIST; //用于初始化对话框的标志位
+
+
+	if (GetOpenFileName(&ofn) == TRUE)
+		MessageBox(ofn.lpstrFile);
 }
