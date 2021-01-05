@@ -158,5 +158,18 @@ HCURSOR CScreenshotDlg::OnQueryDragIcon()
 
 void CScreenshotDlg::OnBnClickedButton1()
 {
-	// TODO: 在此添加控件通知处理程序代码
+	//获取桌面窗口句柄
+	HWND hDesktopWnd = ::GetDesktopWindow();
+	//获取桌面窗口DC
+	HDC hdc = ::GetDC(hDesktopWnd);
+	//创建兼容DC
+	HDC mdc = CreateCompatibleDC(hdc);
+
+	//获取屏幕宽高
+	DWORD dwScrenWidth = ::GetSystemMetrics(SM_CXSCREEN);
+	DWORD dwScreenHeight = ::GetSystemMetrics(SM_CYSCREEN);
+
+	//创建兼容位图
+	HBITMAP bmp = CreateCompatibleBitmap(mdc, dwScrenWidth, dwScrenWidth);
+
 }
