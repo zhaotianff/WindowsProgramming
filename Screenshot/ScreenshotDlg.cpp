@@ -7,6 +7,7 @@
 #include "Screenshot.h"
 #include "ScreenshotDlg.h"
 #include "afxdialogex.h"
+#include <atlimage.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -170,6 +171,18 @@ void CScreenshotDlg::OnBnClickedButton1()
 	DWORD dwScreenHeight = ::GetSystemMetrics(SM_CYSCREEN);
 
 	//创建兼容位图
-	HBITMAP bmp = CreateCompatibleBitmap(mdc, dwScrenWidth, dwScrenWidth);
+	HBITMAP bmp = CreateCompatibleBitmap(hdc, dwScrenWidth, dwScreenHeight);
 
+	//选中位图
+	HBITMAP holdBmp = (HBITMAP)::SelectObject(mdc, bmp);
+	::BitBlt(mdc, 0, 0, dwScrenWidth, dwScreenHeight, hdc, 0, 0, SRCCOPY);
+
+	CImage image;
+	image.Attach(bmp);
+	image.Save(L"D:\\a.jpg");
+    
+
+	::ReleaseDC(hDesktopWnd,hdc);
+	DeleteObject(mdc);
+	DeleteObject(holdBmp);
 }
