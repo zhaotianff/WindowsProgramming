@@ -177,12 +177,42 @@ void CScreenshotDlg::OnBnClickedButton1()
 	HBITMAP holdBmp = (HBITMAP)::SelectObject(mdc, bmp);
 	::BitBlt(mdc, 0, 0, dwScrenWidth, dwScreenHeight, hdc, 0, 0, SRCCOPY);
 
+
+#pragma region 绘制鼠标
+	CURSORINFO cursorInfo{};
+	ICONINFO iconInfo{};
+	HBITMAP bmpOldMask = NULL;
+	HDC cdc = NULL;
+
+	cdc = ::CreateCompatibleDC(mdc);
+
+	cursorInfo.cbSize = sizeof(cursorInfo);
+	GetCursorInfo(&cursorInfo);
+	GetIconInfo(cursorInfo.hCursor, &iconInfo);
+	bmpOldMask = (HBITMAP)::SelectObject(cdc, iconInfo.hbmMask);
+	::BitBlt(mdc, cursorInfo.ptScreenPos.x, cursorInfo.ptScreenPos.y, 50, 50, cdc, 0, 0, SRCAND);
+	::SelectObject(cdc, iconInfo.hbmColor);
+	::BitBlt(mdc, cursorInfo.ptScreenPos.x, cursorInfo.ptScreenPos.y, 50, 50, cdc, 0, 0, SRCPAINT);
+
+	::SelectObject(cdc, bmpOldMask);
+	::DeleteObject(iconInfo.hbmColor);
+	::DeleteObject(iconInfo.hbmMask);
+	::DeleteDC(cdc);
+#pragma endregion
+
+
 	CImage image;
 	image.Attach(bmp);
+
+	//保存
 	image.Save(L"D:\\a.jpg");
-    
+
+	ShellExecute(NULL, L"open", L"D:\\a.jpg", NULL, NULL, SW_SHOWNORMAL);
+
+	//::SetWindowPos(GetSafeHwnd(), HWND_BOTTOM, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
 
 	::ReleaseDC(hDesktopWnd,hdc);
-	DeleteObject(mdc);
+	DeleteDC(mdc);
 	DeleteObject(holdBmp);
+	DeleteObject(bmp);
 }
