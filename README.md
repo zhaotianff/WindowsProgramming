@@ -33,8 +33,17 @@ Windows programming demo
 * [钩子](https://github.com/zhaotianff/WindowsProgramming/tree/master/Hook)
   * 监视发送到消息队列的消息
   * 监视低级键盘输入事件
+  * 简易键盘输入记录器(工具)
 * [消息](https://github.com/zhaotianff/WindowsProgramming/tree/master/Message)
 * [IO](https://github.com/zhaotianff/WindowsProgramming/tree/master/IO)
+  * 创建文件
+  * 读取文件
+  * 删除文件
 * [通用对话框](https://github.com/zhaotianff/WindowsProgramming/tree/master/CommonDlg)
+* 启动技术
+  * 创建进程API
+  * 突破SESSION 0隔离创建用户进程 
+  * 内存直接加载运行
+
 ## Licenses
 [MIT](LICENSE)
