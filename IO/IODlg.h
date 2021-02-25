@@ -37,4 +37,5 @@ public:
 public:
 	LPTSTR OpenFile();
 	afx_msg void OnBnClickedButton2();
+	afx_msg void OnBnClickedButton4();
 };
