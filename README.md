@@ -40,7 +40,7 @@ Windows programming demo
   * 读取文件
   * 删除文件
 * [通用对话框](https://github.com/zhaotianff/WindowsProgramming/tree/master/CommonDlg)
-* 启动技术
+* [启动技术](https://github.com/zhaotianff/WindowsProgramming/tree/master/Self-starting)
   * 创建进程API
   * 突破SESSION 0隔离创建用户进程 
   * 内存直接加载运行
