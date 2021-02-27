@@ -12,6 +12,7 @@
 #define new DEBUG_NEW
 #endif
 
+#define notepad_Wide L"C:\\Windows\\System32\\notepad.exe"
 #define notepad "C:\\Windows\\System32\\notepad.exe"
 
 
@@ -70,6 +71,7 @@ BEGIN_MESSAGE_MAP(CSelfstartingDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1, &CSelfstartingDlg::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &CSelfstartingDlg::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON3, &CSelfstartingDlg::OnBnClickedButton3)
+	ON_BN_CLICKED(IDC_BUTTON4, &CSelfstartingDlg::OnBnClickedButton4)
 END_MESSAGE_MAP()
 
 
@@ -171,7 +173,21 @@ void CSelfstartingDlg::OnBnClickedButton2()
 {
 	
 	//CreateProcess()
+	PROCESS_INFORMATION pi{};
+	STARTUPINFO si{};
 
+	//hide
+	//si.dwFlags = STARTF_USESHOWWINDOW;
+	//si.wShowWindow = SW_HIDE;
+
+	si.cb = sizeof(STARTUPINFO);
+	auto bRet = CreateProcess(notepad_Wide, NULL, NULL, NULL, FALSE, NULL, NULL, NULL, &si, &pi);
+
+	//show
+	//ShowWindow(SW_SHOW);
+
+	CloseHandle(pi.hThread);
+	CloseHandle(pi.hProcess);
 }
 
 
@@ -181,4 +197,32 @@ void CSelfstartingDlg::OnBnClickedButton3()
 	TCHAR* lpFile = L"notepad";
 	TCHAR* lpDir = L"C:\\Windows\\System32";
 	ShellExecute(GetSafeHwnd(), NULL, lpFile, NULL, lpDir, SW_SHOWNORMAL);
+}
+
+
+void CSelfstartingDlg::OnBnClickedButton4()
+{
+	/*
+	* 在Windows XP、Windows Server 2003，以及更老版本的Windows操作系统中，服务和应用程序使用相同的会话(SESSION)来运行，
+	* 而这个会话是由第一个登录到控制台的用户来启用的，该会话就称为SESSION 0。
+	* 将服务和用户应用程序一起在SESSION 0中运行会导致安全风险，因为服务会使用提升后的权限来运行，而用户应用程序使用用户特权（大部分都是非管理员用户）运行，
+	* 这会使得恶意软件把某个服务作为攻击目标，通过“劫持”该服务以达到提升自己权限级别的目的
+	* 
+	* 从Windows Vista开始，只有服务可以托管到SESSION 0中，用户应用程序和服务之间会进行隔离，并需要运行在用户登录系统时创建的后续会话中
+	* 如第一个登录用户创建Session1,第二个登录用户创建Session 2，以此类推
+	* 
+	* 使用不同会话运行的实体（应用程序或服务），如果不将自己明确标注为全局命名空间，并提供相应的访问控制设置，那么将无法互相发送消息，共享UI元素或共享内核对象
+	* 
+	* 
+	*/
+
+	/*
+	* 调用WTSGetActiveConsoleSessionId函数来获取当前程序的会话ID，即Session Id
+	* 根据Session Id继续调用WTSQueryUserToken函数来检索用户令牌，并获取对应的用户令牌句柄（调用CloseHandle释放句柄）
+	* 使用DuplicateTokenEx函数来创建一个新令牌，并复制上面获取的用户信息，设置新令牌的访问权限为MAXIMUM_ALLOWED，表示获取所有令牌权限。新访问令牌的模拟级别为SecurityIdentification，而且令牌类型为TokenPrimary，这表示新令牌是可以在CreateProcessAsUser函数中使用的主令牌
+	* 根据新令牌调用CreateEnvironmentBlock函数创建一个环境块，用来传递给CreateProcessAsUser使用，在不需要使用环境块时，调用DestroyEnvironmentBlock函数进行函数释放
+	* 调用CreateProcessAsUser来创建用户桌面进程
+	*/
+	auto dwSessionID = WTSGetActiveConsoleSessionId();
+
 }

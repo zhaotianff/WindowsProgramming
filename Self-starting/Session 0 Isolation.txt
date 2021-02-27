@@ -1,0 +1,113 @@
+https://kb.firedaemon.com/support/solutions/articles/4000086228-what-is-microsoft-windows-session-0-isolation-and-interactive-services-detection-
+
+
+Session 0 is a specialised Windows Session where all aspects of a Windows and FireDaemon Pro services including interactive GUI components (e.g. windows, dialog boxes, popups etc.) and other aspects (e.g. mapped drives, environment variables etc.) are displayed / instantiated in complete isolation from your regularly logged in Windows desktop session. This segregation is intentional, by design and enforced by the operating system. Session 0 Isolation first appeared in Windows Vista and Server 2008 in order to mitigate a variety of security risks including shatter attacks. Session 0 Isolation is not present on earlier versions of Microsoft Windows including Windows XP and Server 2003.
+
+
+
+The Interactive Services Detection Service (UI0Detect) is a built-in Windows service that when enabled allows you to switch back and forth between your currently logged in desktop session and session 0. The UI0Detect service has been removed from the most recent versions of Windows 10 and Server 2019.
+
+
+
+"Features" to note about Session 0:
+
+You cannot log in to it directly - you must switch to it - akin to Fast User Switching or Switch User
+It is "user-less" meaning there is no specific user account associated directly with Session 0
+It has no "normal" session characteristics (e.g. Windows Explorer, 3D graphics acceleration, screen saver, screen lock and so forth)
+It is inaccessible by default on all Windows installations. It must be enabled
+Once enabled, you may be greeted with the Windows default Session 0 "nag dialog" in your logged-in session task tray. Use this dialog to switch to Session 0.
+You may see errors or warnings in the Windows Event Logs in relation to services running interactively in Session 0 being "invalid" or "in error" or "disallowed". These can generally be safely ignored
+You may find you lose all network connectivity if you switch to Session 0. This can be problematic if you are using RDP or other remote control software
+You may just see a black screen when you switch to Session 0
+You may see badly redrawn application windows and dialog boxes on Session 0
+You will be automatically logged out after 30 seconds of inactivity and returned to the Windows Login screen. If connecting via RDP, you RDP session will be terminated
+If you are running Windows 10, Server 2016 or Server 2019 your keyboard and mouse will be completely ignored on Session 0 (ie. your keyboard and mouse will appear to not work)
+Session 0 is available but inaccessible on Windows Server Core operating system variants and on recent versions of Windows 10 and Server 2019.
+
+
+The various sections below outline how to resolve the limitations listed above. You can still continue to use FireDaemon Pro to create interactive Windows services despite all of the limitations listed above.
+
+
+Deploy FireDaemon Zero and ZeroInput
+Please consider deploying FireDaemon Zero and optionally FireDaemon ZeroInput if you are creating interactive services using FireDaemon Pro and you must work interactively on Session 0. These two products assist in resolving most of the issues above.
+
+
+
+Reinstall Your Graphics Drivers to Avoid Session 0 Black Screen
+When you switch desktop to Session 0 for the first time you might just see a completely black screen. This is completely normal. To resolve this you must completely uninstall then reinstall your graphics drivers. If you are seeing this in a virtual machine, then uninstall and reinstall the corresponding virtual machine "helper" drivers - for example, VMware Tools. If you are running Windows 10 Version 1803 or later or Server 2019 and experience this then you will need to deploy our ZeroInput driver.
+
+
+
+Fully Patch Microsoft Windows
+We have seen several Session 0 issues resolved just by patching Windows. Hence, before deploying any FireDaemon product and before attempting to use Session 0 you should fully patch your Microsoft Windows operating system via Windows Update. This means all critical and recommended patches and updates including IE11 and root certificates.
+
+
+Use Specific Service User Accounts to Avoid Application Issues on Session 0
+Windows Services can run under a variety of user credentials. When using FireDaemon Pro the application will be run by default as the user LocalSystem. This account is a specialised highly privileged user account used by the Windows Service Control Manager. Running as this account might cause your application to not work properly. If you experience application issues, you should try and run the service as the specific user under which you installed the software originally. That user should always be a member of the local or domain administrator group, especially if your service is to interact with the desktop on Session 0. You can change the FireDaemon Pro Windows Service Logon Account in the logon section of that particular service.
+
+
+
+Keyboard and Mouse Are Completely Ignored on Session 0 on Windows 10, Server 2016 or Server 2019
+If you switch to Session 0 on Windows 10, Server 2016, or Server 2019 your keyboard and mouse will not work. Please refer to this article for a detailed discussion and workarounds. Also, check out our ZeroInputdriver which can assist in mitigating the issue.
+
+
+Session 0 Inaccessible On Server Core Variants
+Server Core is the headless version of Microsoft Windows. Server Core is designed to be centrally managed via Server Manager. You can enable RDP on Server Core (via the sconfig utility) however, once you RDP in, you will only be presented with a single command prompt. Additionally, many GUI based applications are not installed, or if they are installed you will need to launch them via the command line manually. Note that the Interactive Services Detection Service (UI0Detect) is not installed at all on Server Core. Whilst it's possible to install FireDaemon Pro and setup FireDaemon Pro based services, it's impossible to switch to Session 0 by virtue of the Interactive Services Detection Service (UI0Detect) and all supporting features being absent.
+
+
+
+Interactive Services Detection Service Removed On Windows 10 Version 1803 and Server 2019
+Microsoft has removed the Interactive Services Detection Service (UI0Detect) on Windows 10 Version 1803 and Server 2019. You can use the latest versions of FireDaemon ZeroInput plus FireDaemon Zero to restore access to Session 0.
+
+
+
+RDP Behaviour Changes on Windows 10 and Server 2019
+In the past, you could simply RDP to your machine and switch desktop to Session 0. The latest releases of Windows 10 and Server 2019 impose the following restrictions:
+
+On Windows 10 1809 and Server 2019 when you switch back from Session 0 you will be returned to the Windows login prompt.
+On Server 2019, if you switch to Session 0 on the console session, all RDP sessions may freeze and may be terminated.
+On Windows 10 1903 or later you can now no longer switch desktop to Session 0 via RDP. Your RDP session will be terminated. You will need to use an alternate remote control product such as TeamViewer, TSplus or TightVNC. These products allow you to access your machine's console session. If you use TightVNC ensure you deploy the DFMirage driver to ensure console applications running on Session 0 are displayed properly (see below).
+
+
+Ensuring Console Applications Are Displayed Properly On Session 0
+Recent versions of Microsoft Windows have a new console application mode which means console-based applications may not be displayed at all on Session 0. To ensure console applications are displayed properly you may need to enable Legacy Console Mode. This is set on a user by user basis. So if you are running an interactive FireDaemon Pro service then you will need to set this via the registry or manually. To set via the registry, logon as the user you intend to run the service as and set HKEY_CURRENT_USER\Console\ForceV2 to 0. Otherwise, you can set Legacy Console Mode by logging into your computer, starting a Windows Command Prompt then setting the Legacy Console Mode as per the screenshot below (right-click the top left icon in the Command Prompt):
+
+
+
+
+
+
+
+Operating System Choice Considerations
+If it's imperative for you to continue to have access to Session 0 to manage your Interactive Windows service, then you still have the following options available to you (i.e. the operating system still has the UI0Detect / Interactive Services Detection Service present):
+
+Deploy Windows 8.1 or any version of Windows 10 up to and including Windows 10 1709.
+Deploy Windows 10 LTSC / LTSB instead of the retail version of Windows 10
+Deploy Server 2012 R2 or Server 2016.
+
+
+Immediate RDP Disconnection or Hang - Server may Become Unresponsive After Switching To Session 0
+You may experience the following when switching to Session 0 over RDP:
+
+Your RDP Session will be immediately terminated or appear to hang
+You won't be able to connect to the server again for anything up to 20 minutes
+All applications running in Session 0 that utilise the Microsoft message queue will freeze during that time, resuming once the blockage self-corrects.
+
+
+This is a known bug in Microsoft Windows (specifically observed on Server 2012, Server 2012 R2 and Server 2016). This is due to either the RDP display driver running on Session 0 crashing or the RDP User Mode Port Redirector crashing. Check the Windows Event logs to determine what is failing.  Try the following two workarounds to see if it alleviates the problem:
+
+
+
+Workaround 1
+Cease using RDP to connect to your machine
+Use an alternate remote control product that gives you access to your machine's console session such as your hypervisor VM console (e.g. VMware vSphere), TeamViewer, TSplus or TightVNC. Ensure you thoroughly test your setup to ensure access to your server and switching to Session 0 works as expected.
+Workaround 2
+Ensure Windows is fully patched - everything ... literally everything - don't skip anything
+Ensure you upgrade your network card and graphics drivers to the very latest available
+If your operating system is virtualised ensure your hypervisor is fully patched and you have the latest helper tools installed (e.g. VMware Tools)
+Ensure you are using the latest version of the RDP client (10.2 or later). If you are RDP'ing to Server 2016 or 2019 ensure you do so from Windows 10 or other Server 2016 or 2019 computers. Avoid Windows 7, 8, or 8.1 RDP clients if possible.
+When you RDP to the problem server ensure you have disabled all forms of drive, printer, clipboard, and audio mapping and redirection across the RDP session. This can be achieved by changing settings in your RDP client, via Group Policy or via Local Policy on the remote server. The screenshot below shows what needs to be changed in your RDP client configuration.
+
+
+
+

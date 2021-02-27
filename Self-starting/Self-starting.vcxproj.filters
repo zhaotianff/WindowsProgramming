@@ -60,4 +60,7 @@
       <Filter>资源文件</Filter>
     </Image>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Session 0 Isolation.txt" />
+  </ItemGroup>
 </Project>
