@@ -3,8 +3,12 @@
 
 #include <iostream>
 #include<string>
+#include<Windows.h>
 
 using namespace std::string_literals;
+
+#define notepadR R"(C:\Windows\System32\notepad.exe)"
+#define notepad  "C:\Windows\System32\notepad.exe"
 
 int main()
 {
@@ -45,4 +49,8 @@ int main()
     auto S7 = LR"("Hello \ world")"s; // std::wstring from a raw const wchar_t*
     auto S8 = uR"("Hello \ world")"s; // std::u16string from a raw const char16_t*, encoded as UTF-16
     auto S9 = UR"("Hello \ world")"s; // std::u32string from a raw const char32_t*, encoded as UTF-32
+    
+
+    //WinExec(notepad, SW_SHOW); can not open notepad
+    WinExec(notepadR, SW_SHOW);
 }
