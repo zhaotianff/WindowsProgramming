@@ -51,6 +51,8 @@ vector<PROCESSENTRY32> GetAllProcess()
         bRet = Process32Next(hSnap, &pe32);
     }
 
+    CloseHandle(hSnap);
+
     return processes;
 }
 
