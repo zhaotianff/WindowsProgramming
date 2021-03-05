@@ -22,6 +22,14 @@ int main()
     {
         wcout << b->szExeFile << endl;
         cout << b->th32ProcessID << endl;
+        
+        //结束记事本进程
+        if (wcscmp(b->szExeFile,L"notepad.exe") == 0)
+        {
+            auto hNotepad = OpenProcess(PROCESS_ALL_ACCESS, FALSE, b->th32ProcessID);
+            TerminateProcess(hNotepad, 0);
+        }
+
         cout << endl;
     }
 
