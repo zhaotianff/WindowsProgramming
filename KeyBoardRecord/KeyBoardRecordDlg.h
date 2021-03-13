@@ -1,20 +1,20 @@
 ﻿
-// IODlg.h: 头文件
+// KeyBoardRecordDlg.h: 头文件
 //
 
 #pragma once
 
 
-// CIODlg 对话框
-class CIODlg : public CDialogEx
+// CKeyBoardRecordDlg 对话框
+class CKeyBoardRecordDlg : public CDialogEx
 {
 // 构造
 public:
-	CIODlg(CWnd* pParent = nullptr);	// 标准构造函数
+	CKeyBoardRecordDlg(CWnd* pParent = nullptr);	// 标准构造函数
 
 // 对话框数据
 #ifdef AFX_DESIGN_TIME
-	enum { IDD = IDD_IO_DIALOG };
+	enum { IDD = IDD_KEYBOARDRECORD_DIALOG };
 #endif
 
 	protected:
@@ -33,10 +33,10 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnBnClickedButton1();
-
-public:
-	LPTSTR OpenFile();
 	afx_msg void OnBnClickedButton2();
-	afx_msg void OnBnClickedButton4();
-	afx_msg void OnBnClickedButton5();
+	afx_msg void OnRawInput(UINT nInputcode, HRAWINPUT hRawInput);
+
+public: 
+	BOOL SaveKeyToFile(USHORT usVkey);
+	afx_msg void OnBnClickedButton3();
 };

@@ -71,6 +71,7 @@ BEGIN_MESSAGE_MAP(CIODlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON1, &CIODlg::OnBnClickedButton1)
 	ON_BN_CLICKED(IDC_BUTTON2, &CIODlg::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON4, &CIODlg::OnBnClickedButton4)
+	ON_BN_CLICKED(IDC_BUTTON5, &CIODlg::OnBnClickedButton5)
 END_MESSAGE_MAP()
 
 
@@ -379,4 +380,10 @@ void CIODlg::OnBnClickedButton4()
 	{
 		AfxMessageBox(L"删除失败");
 	}
+}
+
+
+void CIODlg::OnBnClickedButton5()
+{
+	auto hFile = CreateFile(L"a.txt", FILE_APPEND_DATA, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
 }
