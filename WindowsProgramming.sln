@@ -39,6 +39,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Process", "Process\Process.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "KeyBoardRecord", "KeyBoardRecord\KeyBoardRecord.vcxproj", "{B2C73BDE-0138-4CCA-A2C7-11AB59C8F958}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Lambda", "Lambda\Lambda.vcxproj", "{EB24FE53-7C30-4794-B11A-CBC9DEE33E39}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -183,6 +185,14 @@ Global
 		{B2C73BDE-0138-4CCA-A2C7-11AB59C8F958}.Release|x64.Build.0 = Release|x64
 		{B2C73BDE-0138-4CCA-A2C7-11AB59C8F958}.Release|x86.ActiveCfg = Release|Win32
 		{B2C73BDE-0138-4CCA-A2C7-11AB59C8F958}.Release|x86.Build.0 = Release|Win32
+		{EB24FE53-7C30-4794-B11A-CBC9DEE33E39}.Debug|x64.ActiveCfg = Debug|x64
+		{EB24FE53-7C30-4794-B11A-CBC9DEE33E39}.Debug|x64.Build.0 = Debug|x64
+		{EB24FE53-7C30-4794-B11A-CBC9DEE33E39}.Debug|x86.ActiveCfg = Debug|Win32
+		{EB24FE53-7C30-4794-B11A-CBC9DEE33E39}.Debug|x86.Build.0 = Debug|Win32
+		{EB24FE53-7C30-4794-B11A-CBC9DEE33E39}.Release|x64.ActiveCfg = Release|x64
+		{EB24FE53-7C30-4794-B11A-CBC9DEE33E39}.Release|x64.Build.0 = Release|x64
+		{EB24FE53-7C30-4794-B11A-CBC9DEE33E39}.Release|x86.ActiveCfg = Release|Win32
+		{EB24FE53-7C30-4794-B11A-CBC9DEE33E39}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -190,6 +200,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{1C7D6AB3-6E7C-48B9-83C1-C3394C6CE06C} = {1E19A88B-3013-4EB9-994E-F1DCF568D657}
 		{4DD679C6-EC85-4696-9856-5C0E8DDAAEC7} = {1E19A88B-3013-4EB9-994E-F1DCF568D657}
+		{EB24FE53-7C30-4794-B11A-CBC9DEE33E39} = {1E19A88B-3013-4EB9-994E-F1DCF568D657}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {794C7078-B5BA-4004-8965-A2864872EBFB}
