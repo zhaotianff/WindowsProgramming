@@ -6,6 +6,12 @@ Windows programming demo
 * VC++ v142 toolset  
 * Windows 10 1703+
 
+## C++基础(基于C++ 11)
+> C++这些年我一直在看，但真正在项目里用得也不多，所以经常就是看了又忘
+> 这里总结的可能并不全面，只是我日常学习过程中的一些总结
+* [字符串和字符文本](https://github.com/zhaotianff/WindowsProgramming/tree/master/StringLiteral)
+* [统一初始化](https://github.com/zhaotianff/WindowsProgramming/tree/master/UniformInitialization)  
+
 ## 代码列表
 * [磁盘](https://github.com/zhaotianff/WindowsProgramming/tree/master/Disk)
   * 获取磁盘卷标名
