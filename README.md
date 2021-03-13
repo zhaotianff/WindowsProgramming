@@ -32,6 +32,7 @@ Windows programming demo
 * [键盘](https://github.com/zhaotianff/WindowsProgramming/tree/master/KeyBoard)
   * 获取按键状态
   * 模拟键盘按下
+  * (工具)按键记录器
 * [鼠标](https://github.com/zhaotianff/WindowsProgramming/tree/master/Mouse)
   * 交换鼠标左右键
   * 模拟鼠标操作
@@ -41,11 +42,19 @@ Windows programming demo
   * 监视低级键盘输入事件
   * 简易键盘输入记录器(工具)
 * [消息](https://github.com/zhaotianff/WindowsProgramming/tree/master/Message)
+  * 通过消息关闭资源管理器
+  * 通过消息获取/设置资源管理器标题
 * [IO](https://github.com/zhaotianff/WindowsProgramming/tree/master/IO)
   * 创建文件
+  * 追加文件
   * 读取文件
   * 删除文件
 * [通用对话框](https://github.com/zhaotianff/WindowsProgramming/tree/master/CommonDlg)
+  * 打开/保存文件对话框
+  * 浏览文件夹对话框
+  * 打印对话框
+  * 页面设置对话框
+  * 打印属性性对话框
 * [启动技术](https://github.com/zhaotianff/WindowsProgramming/tree/master/Self-starting)
   * 创建进程API
   * 突破SESSION 0隔离创建用户进程 

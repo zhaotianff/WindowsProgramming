@@ -70,6 +70,7 @@ BEGIN_MESSAGE_MAP(CCommonDlgDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON2, &CCommonDlgDlg::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON3, &CCommonDlgDlg::OnBnClickedButton3)
 	ON_BN_CLICKED(IDC_BUTTON4, &CCommonDlgDlg::OnBnClickedButton4)
+	ON_BN_CLICKED(IDC_BUTTON5, &CCommonDlgDlg::OnBnClickedButton5)
 END_MESSAGE_MAP()
 
 
@@ -322,4 +323,27 @@ void CCommonDlgDlg::OnBnClickedButton4()
 
 	if (GetOpenFileName(&ofn) == TRUE)
 		MessageBox(ofn.lpstrFile);
+}
+
+
+void CCommonDlgDlg::OnBnClickedButton5()
+{
+	TCHAR szBuffer[MAX_PATH]{};
+	BROWSEINFO bi{};
+	bi.hwndOwner = ::GetForegroundWindow(); //对话框的拥有者名柄
+	bi.pszDisplayName = szBuffer;  //设置选中路径缓冲区
+	bi.pidlRoot = NULL; //默认选中的根路径
+	bi.lpszTitle = L"标题";  //标题
+	bi.ulFlags = BIF_NEWDIALOGSTYLE;  //对话框的选项
+
+	LPITEMIDLIST idl = SHBrowseForFolder(&bi);  //显示对话框，并获取快捷方式
+
+	if (NULL == idl)
+	{
+		return;
+	}
+
+	SHGetPathFromIDList(idl, szBuffer);   //从快捷方式获取路径
+
+	MessageBox(szBuffer);
 }
