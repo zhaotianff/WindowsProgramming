@@ -72,6 +72,8 @@ BEGIN_MESSAGE_MAP(CKeyBoardRecordDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON2, &CKeyBoardRecordDlg::OnBnClickedButton2)
 	ON_WM_INPUT()
 	ON_BN_CLICKED(IDC_BUTTON3, &CKeyBoardRecordDlg::OnBnClickedButton3)
+//	ON_WM_LBUTTONDOWN()
+//	ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
 
 
@@ -240,6 +242,17 @@ void CKeyBoardRecordDlg::OnRawInput(UINT nInputcode, HRAWINPUT hRawInput)
 		{
 			SaveKeyToFile(rawinputData.data.keyboard.VKey);
 		}
+	}
+	//todo register
+	else if (RIM_TYPEMOUSE == rawinputData.header.dwType)
+	{	
+		POINT point{ rawinputData.data.mouse.lLastX ,rawinputData.data.mouse.lLastY };
+		
+		HWND hwnd = ::ChildWindowFromPoint(m_hWnd, point);
+
+		TCHAR buf[MAX_PATH]{};
+		::GetWindowText(hwnd, buf, MAX_PATH);
+		AfxMessageBox(buf);
 	}
 
 	CDialogEx::OnRawInput(nInputcode, hRawInput);
