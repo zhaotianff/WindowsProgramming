@@ -74,6 +74,7 @@ BEGIN_MESSAGE_MAP(CKeyBoardRecordDlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON3, &CKeyBoardRecordDlg::OnBnClickedButton3)
 //	ON_WM_LBUTTONDOWN()
 //	ON_WM_MOUSEMOVE()
+ON_WM_LBUTTONDOWN()
 END_MESSAGE_MAP()
 
 
@@ -211,6 +212,29 @@ void CKeyBoardRecordDlg::OnBnClickedButton2()
 	rawInputDevice.dwFlags = RIDEV_INPUTSINK;   //模式标志 指定如何解释由usUsagePage和usUsage提供的信息 RIDEV_INPUTSINK表示即使程序不处于上层窗口或是激活窗口，程序依然可以接收原始输入，但是，结构体成员hwndTarget必须要指定
 	rawInputDevice.hwndTarget = m_hWnd; //指向目标窗口的句柄，如果是NULL，则它会遵循键盘焦点
 
+	/*
+	* 可以捕获鼠标和键盘消息
+	* 不过捕获的鼠标位置是基于窗体的
+	* 如果用桌面的句柄(GetDesktopWindow)，会注册失败
+	* 所以换了种方式来捕获鼠标
+	* RAWINPUTDEVICE Rid[2];
+        
+	Rid[0].usUsagePage = 0x01;          // HID_USAGE_PAGE_GENERIC
+	Rid[0].usUsage = 0x02;              // HID_USAGE_GENERIC_MOUSE
+	Rid[0].dwFlags = RIDEV_INPUTSINK;    
+	Rid[0].hwndTarget = m_hWnd;
+
+	Rid[1].usUsagePage = 0x01;          // HID_USAGE_PAGE_GENERIC
+	Rid[1].usUsage = 0x06;              // HID_USAGE_GENERIC_KEYBOARD
+	Rid[1].dwFlags = RIDEV_INPUTSINK;    
+	Rid[1].hwndTarget = m_hWnd;
+
+	if (RegisterRawInputDevices(Rid, 2, sizeof(Rid[0])) == FALSE)
+	{
+		//registration failed. Call GetLastError for the cause of the error
+	}
+	*/
+
 	//注册原始输入设备
 	BOOL bRet = ::RegisterRawInputDevices(&rawInputDevice, 1, sizeof(rawInputDevice));
 
@@ -300,4 +324,12 @@ BOOL CKeyBoardRecordDlg::SaveKeyToFile(USHORT usVkey)
 void CKeyBoardRecordDlg::OnBnClickedButton3()
 {
 
+}
+
+
+void CKeyBoardRecordDlg::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	
+
+	CDialogEx::OnLButtonDown(nFlags, point);
 }
