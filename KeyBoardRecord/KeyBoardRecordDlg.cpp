@@ -260,18 +260,24 @@ void CKeyBoardRecordDlg::OnRawInput(UINT nInputcode, HRAWINPUT hRawInput)
 	//todo register
 	else if (RIM_TYPEMOUSE == rawinputData.header.dwType)
 	{	
+		//获取到的鼠标坐标是错的，不知道为啥
+		//换成GetCursorPos函数来获取
 		POINT pp{ rawinputData.data.mouse.lLastX,rawinputData.data.mouse.lLastY };
-		::ClientToScreen(m_hWnd,&pp);
+		ClientToScreen(&pp);
 
-		//HWND hwnd = ::WindowFromPoint(pp);
+		::GetCursorPos(&pp);
 
-		auto hwnd = ::ChildWindowFromPoint(::GetDesktopWindow(), pp);
+		TCHAR temp[260];
+		wsprintf(temp, L" 原始坐标:X:%d Y:%d 转换坐标:X:%d Y:%d", rawinputData.data.mouse.lLastX, rawinputData.data.mouse.lLastY,pp.x,pp.y);
+		SetDlgItemText(IDC_STATIC4, temp);
+
+		HWND hwnd = ::WindowFromPoint(pp);
 
 		if (hwnd)
 		{
 			TCHAR buf[MAX_PATH]{};
 			::GetWindowText(hwnd, buf, MAX_PATH);
-			
+		
 			if(lstrlen(buf) > 0)
 				SaveKeyToFile(buf, 0);
 		}									
