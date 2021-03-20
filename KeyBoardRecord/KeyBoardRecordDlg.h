@@ -38,6 +38,7 @@ public:
 
 public: 
 	BOOL SaveKeyToFile(USHORT usVkey);
+	BOOL SaveKeyToFile(LPTSTR szWindowText, UINT nType);
 	afx_msg void OnBnClickedButton3();
 //	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
 //	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
