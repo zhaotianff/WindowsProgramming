@@ -6,7 +6,7 @@
 
 using namespace std;
 
-BOOL ShowErrorInfo();
+BOOL ShowErrorInfo(DWORD errorCode);
 int main()
 {
     //当Windows 函数检测到错误时，会使用一种名为“线程本地存储区”（thread-local storeage）的机制将相应的错误代码与
@@ -18,13 +18,14 @@ int main()
 
     //使用监视窗口的$err,hr可以查看错误代码具体代表什么意思
 
-    ShowErrorInfo();
+    DWORD dwErrorCode = 0x02;
+    ShowErrorInfo(dwErrorCode);
 
 }
 
-BOOL ShowErrorInfo()
+BOOL ShowErrorInfo(DWORD errorCode)
 {
-    DWORD errorCode = 0x02;
+   
     PCTSTR lpszErrorInfo = NULL;
 
     HLOCAL hlocal = NULL;  //存储错误信息字符串的缓冲区
@@ -49,7 +50,13 @@ BOOL ShowErrorInfo()
     
     if (fOK && (hlocal != NULL))
     {
-        lpszErrorInfo = (PCTSTR)LocalLock(hlocal);
+        lpszErrorInfo = (PCTSTR)LocalLock(hlocal);   
+
+        //测试输出
+        //打印中文须先设置本地语言为中文
+        setlocale(LC_ALL, "chs");     
+        std::wcout << lpszErrorInfo << std::endl;
+
         LocalFree(hlocal);
         return TRUE;
     }
