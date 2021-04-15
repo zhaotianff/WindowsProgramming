@@ -7,6 +7,8 @@
 #include "Self-starting.h"
 #include "Self-startingDlg.h"
 #include "afxdialogex.h"
+#include <wtsapi32.h>
+#include <userenv.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -14,6 +16,9 @@
 
 #define notepad_Wide L"C:\\Windows\\System32\\notepad.exe"
 #define notepad "C:\\Windows\\System32\\notepad.exe"
+
+#pragma comment(lib,"Userenv.lib")
+#pragma comment(lib,"Wtsapi32.lib")
 
 
 // 用于应用程序“关于”菜单项的 CAboutDlg 对话框
@@ -223,6 +228,43 @@ void CSelfstartingDlg::OnBnClickedButton4()
 	* 根据新令牌调用CreateEnvironmentBlock函数创建一个环境块，用来传递给CreateProcessAsUser使用，在不需要使用环境块时，调用DestroyEnvironmentBlock函数进行函数释放
 	* 调用CreateProcessAsUser来创建用户桌面进程
 	*/
-	auto dwSessionID = WTSGetActiveConsoleSessionId();
 
+	//获取SessionID
+	auto dwSessionID = WTSGetActiveConsoleSessionId();
+	HANDLE hToken = NULL;
+
+	//获取当前会话的用户令牌
+	if (FALSE == WTSQueryUserToken(dwSessionID, &hToken))
+	{
+		MessageBox(L"QueryUserToken", L"Error");
+		auto a = GetLastError();
+		return;
+	}
+
+	//复制令牌
+	HANDLE hNewToken = NULL;
+	if (FALSE == DuplicateTokenEx(hToken, MAXIMUM_ALLOWED, NULL, SecurityIdentification, TokenPrimary, &hNewToken))
+	{
+		MessageBox(L"DuplicateTokenEx", L"Error");
+		return;
+	}
+
+	LPVOID lpEnvi = NULL;
+	//创建用户会话环境
+	if (FALSE == CreateEnvironmentBlock(&lpEnvi, hNewToken, FALSE))
+	{
+		MessageBox(L"CreateEnvironmentBlock", L"Error");
+		return;
+	}
+
+	STARTUPINFO sinfo{};
+	sinfo.cb = sizeof(sinfo);
+	PROCESS_INFORMATION pi{};
+	
+	BOOL bResult = CreateProcessAsUser(hNewToken, notepad_Wide, NULL, NULL, NULL, FALSE, NORMAL_PRIORITY_CLASS, lpEnvi, NULL, &sinfo, &pi);
+
+	CloseHandle(pi.hThread);
+	CloseHandle(pi.hProcess);
+	CloseHandle(hToken);
+	CloseHandle(hNewToken);
 }
