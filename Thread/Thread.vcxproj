@@ -208,7 +208,7 @@
     <None Include="Thread.md" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="C:\Users\Administrator\Desktop\ProcessState.jpg" />
+    <Image Include="ProcessState.jpg" />
     <Image Include="res\Thread.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
