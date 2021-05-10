@@ -67,7 +67,21 @@ ABOVE_NORMAL_PRIORITY_CLASS(0x00008000)|比正常优先级类别高，但低于高优先级类别
 HIGH_PRIORITY_CLASS(0x00000080)|高优先级类别。拥有该类别的进程通常要完成实时性的任务，如必须要立即执行的任务。该进程中的线程可以抢占正常优先级类别进程和空闲优先级类别进程中的线程。使用该优先级时要慎重，因为高优先级类别的进程几乎可以使用所有CPU能提供的时间，如果该优先级的进程长时间运行，那么其它线程很可能一直得不到处理器时间。
 REALTIME_PRIORITY_CLASS(0x00000100)|实时优先级类别，这是最高的优先级类别。拥有该类别进程的线程能抢占其它所有进程中的线程，包括正在完成重要工作的操作系统进程。对于该优先级，应该尽量不去使用，因为它会中断操作系统的工作，只有在直接和硬件打交道或任务执行时间非常短时才适合使用该优先级类别
 
+在进程的每个优先级别中，线程的优先级层次又有以下划分
+优先级|符号常数
+:--:|:--:
+idle|THREAD_PRIORITY_IDLE
+lowest|THREAD_PRIORITY_LOWEST
+below normal|THREAD_PRIORITY_BELOW_NORMAL
+normal|THREAD_PRIORITY_NORMAL
+above normal|THREAD_PRIORITY_ABOVE_NORMAL
+highest|THREAD_PRIORITY_HIGHEST
+time-critical|THREAD_PRIORITY_TIME_CRITICAL
 
+所有线程在创建的时候都属于THREAD_PRIORITY_NORMAL优先级层次，如果要修改优先级层次，可以  
+在调用CreateThread时传入CREATE_SUSPENDED标志  
+再调用函数SetThreadPriority修改线程优先级层次
+接着调用ResumeThread让线程变为可调度
 
-
-
+有了进程和线程的优先级层次，就可以确定一个线程的基础优先级了，如下：
+![Priority Table](priority_table.png)

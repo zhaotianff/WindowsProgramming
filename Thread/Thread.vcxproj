@@ -208,6 +208,7 @@
     <None Include="Thread.md" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="C:\Users\Administrator\Desktop\priority_table.png" />
     <Image Include="ProcessState.jpg" />
     <Image Include="res\Thread.ico" />
   </ItemGroup>
