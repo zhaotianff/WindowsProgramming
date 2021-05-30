@@ -13,10 +13,11 @@
 void GetWMIDataSync();
 void EnumWMIData();
 void CallWMIProviderMethod();
+void EnumWMIMethod();
 
 int main()
 {
-	EnumWMIData();
+	EnumWMIMethod();
 }
 
 void GetWMIDataSync()
@@ -301,6 +302,99 @@ void CallWMIProviderMethod()
 	pClassInstance->Release();
 	pInParamDefinition->Release();
 	pOutParams->Release();
+	pLoc->Release();
+	pSvc->Release();
+	CoUninitialize();
+}
+
+void EnumWMIMethod()
+{
+	HRESULT hr;
+	hr = CoInitializeEx(0, COINIT_MULTITHREADED);
+	if (FAILED(hr))
+	{
+		return;
+	}
+
+	hr = CoInitializeSecurity(NULL, -1, NULL, NULL, RPC_C_AUTHN_LEVEL_DEFAULT, RPC_C_IMP_LEVEL_IMPERSONATE, NULL, EOAC_NONE, NULL);
+	if (FAILED(hr))
+	{
+		CoUninitialize();
+		return;
+	}
+
+	IWbemLocator* pLoc = NULL;
+	hr = CoCreateInstance(CLSID_WbemLocator, 0, CLSCTX_INPROC_SERVER, IID_IWbemLocator, (LPVOID*)&pLoc);
+	if (FAILED(hr))
+	{
+		CoUninitialize();
+		return;
+	}
+
+	IWbemServices* pSvc = NULL;
+	hr = pLoc->ConnectServer(_bstr_t(L"ROOT\\CIMV2"), NULL, NULL, 0, NULL, 0, 0, &pSvc);
+	if (FAILED(hr))
+	{
+		pLoc->Release();
+		CoUninitialize();
+		return;
+	}
+
+	hr = CoSetProxyBlanket(pSvc, RPC_C_AUTHN_WINNT, RPC_C_AUTHZ_NONE, NULL, RPC_C_AUTHN_LEVEL_CALL, RPC_C_IMP_LEVEL_IMPERSONATE, NULL, EOAC_NONE);
+	if (FAILED(hr))
+	{
+		pSvc->Release();
+		pLoc->Release();
+		CoUninitialize();
+		return;
+	}
+
+	BSTR className = SysAllocString(L"Win32_NetworkAdapter");
+
+	IWbemClassObject* pClass = NULL;
+	hr = pSvc->GetObjectW(className, 0, NULL, &pClass, NULL);
+
+	IWbemClassObject* pInParamDefinition = NULL;
+	IWbemClassObject* pOutParamDefinition = NULL;
+	hr = pClass->BeginMethodEnumeration(WBEM_FLAG_LOCAL_ONLY);
+
+	if (SUCCEEDED(hr))
+	{
+		BSTR name = NULL;
+		while (pClass->NextMethod(0, &name, &pInParamDefinition, &pOutParamDefinition) == WBEM_S_NO_ERROR)
+		{
+			std::wcout << name << std::endl;
+		}
+	}
+
+	if (FAILED(hr))
+	{
+		SysFreeString(className);
+		pClass->Release();
+		if (pInParamDefinition != NULL)
+		{
+			pInParamDefinition->Release();
+		}
+		if (pOutParamDefinition != NULL)
+		{
+			pOutParamDefinition->Release();
+		}
+		pSvc->Release();
+		pLoc->Release();
+		CoUninitialize();
+		return;
+	}
+
+	SysFreeString(className);
+	pClass->Release();
+	if (pInParamDefinition != NULL)
+	{
+		pInParamDefinition->Release();
+	}
+	if (pOutParamDefinition != NULL)
+	{
+		pOutParamDefinition->Release();
+	}
 	pLoc->Release();
 	pSvc->Release();
 	CoUninitialize();
