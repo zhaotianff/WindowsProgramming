@@ -17,6 +17,7 @@ void EnumWMIMethod();
 
 int main()
 {
+	//所有的WMI Provider可以在这里找到 https://docs.microsoft.com/en-us/windows/win32/cimwin32prov/win32-provider
 	EnumWMIMethod();
 }
 
