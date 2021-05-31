@@ -14,6 +14,7 @@ void GetWMIDataSync();
 void EnumWMIData();
 void CallWMIProviderMethod();
 void EnumWMIMethod();
+void SetNetworkAdapeterIP(BSTR ip);
 
 int main()
 {
@@ -399,4 +400,10 @@ void EnumWMIMethod()
 	pLoc->Release();
 	pSvc->Release();
 	CoUninitialize();
+}
+
+void SetNetworkAdapeterIP(BSTR ip)
+{
+	//借助Win32_NetworkAdapterConfiguration的EnableStatic 方法可以设置网卡IP地址
+
 }
