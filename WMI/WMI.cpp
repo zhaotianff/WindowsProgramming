@@ -14,6 +14,7 @@ void GetWMIDataSync();
 void EnumWMIData();
 void CallWMIProviderMethod();
 void EnumWMIMethod();
+void DisableNetoworkAdapter();
 void SetNetworkAdapeterIP(BSTR ip);
 
 int main()
@@ -406,4 +407,90 @@ void SetNetworkAdapeterIP(BSTR ip)
 {
 	//借助Win32_NetworkAdapterConfiguration的EnableStatic 方法可以设置网卡IP地址
 
+}
+
+void DisableNetoworkAdapter()
+{
+	using namespace std;
+	HRESULT hr = CoInitializeEx(NULL, COINIT_MULTITHREADED);
+	if (FAILED(hr))
+	{
+		cout << "Unable to launch COM: 0x" << std::hex << hr << endl;
+		return;
+	}
+
+	if ((FAILED(hr = CoInitializeSecurity(NULL, -1, NULL, NULL, RPC_C_AUTHN_LEVEL_CONNECT, RPC_C_IMP_LEVEL_IMPERSONATE, NULL, EOAC_NONE, 0))))
+	{
+		cout << "Unable to initialize security: 0x" << std::hex << hr << endl;
+		return;
+	}
+
+	IWbemLocator* pLocator = NULL;
+	if (FAILED(hr = CoCreateInstance(CLSID_WbemLocator, NULL, CLSCTX_ALL, IID_PPV_ARGS(&pLocator))))
+	{
+		cout << "Unable to create a WbemLocator: " << std::hex << hr << endl;
+		return;
+	}
+
+	IWbemServices* pService = NULL;
+	hr = pLocator->ConnectServer(_bstr_t("root\\CIMV2"), NULL, NULL, NULL, WBEM_FLAG_CONNECT_USE_MAX_WAIT, NULL, NULL, &pService);
+	if (FAILED(hr))
+	{
+		pLocator->Release();
+		cout << "Unable to connect to \"CIMV2\": " << std::hex << hr << endl;
+		return;
+	}
+
+	IEnumWbemClassObject* pEnumerator = NULL;
+	//可以先列出全部网卡，然后选择对应网卡禁用
+	hr = pService->ExecQuery(_bstr_t("WQL"), _bstr_t("SELECT * FROM Win32_NetworkAdapter  WHERE Name Like 'Intel(R) Ethernet Connection (2) I219-V'"), WBEM_FLAG_FORWARD_ONLY, NULL, &pEnumerator);
+	if (FAILED(hr))
+	{
+		pLocator->Release();
+		pService->Release();
+		cout << "Unable to retrive the network adapter: " << std::hex << hr << endl;
+		return;
+	}
+
+	IWbemClassObject* clsObj = NULL;
+	int numElems;
+	while ((hr = pEnumerator->Next(WBEM_INFINITE, 1, &clsObj, (ULONG*)&numElems)) != WBEM_S_FALSE)
+	{
+		if (FAILED(hr))
+			break;
+
+		VARIANT vtPath;
+		VariantInit(&vtPath);
+		if (FAILED(clsObj->Get(L"__Path", 0, &vtPath, NULL, NULL)))
+		{
+			cout << "Object has no __Path!" << endl;
+			clsObj->Release();
+			continue;
+		}
+
+		IWbemClassObject* pResult = NULL;
+		//禁用或启用网卡
+		hr = pService->ExecMethod(vtPath.bstrVal, _bstr_t("Disable"), 0, NULL, NULL, &pResult, NULL);
+		if (FAILED(hr))
+			cout << "Unable to disable networkadapter: " << std::hex << hr << endl;
+		else
+		{
+			VARIANT vtRet;
+			VariantInit(&vtRet);
+			if (FAILED(hr = pResult->Get(L"ReturnValue", 0, &vtRet, NULL, 0)))
+				cout << "Unable to get return value of call: " << std::hex << hr << endl;
+			else
+				cout << "Method returned: " << vtRet.intVal << endl;
+
+			VariantClear(&vtRet);
+			pResult->Release();
+		}
+
+		VariantClear(&vtPath);
+		clsObj->Release();
+	}
+
+	pEnumerator->Release();
+	pService->Release();
+	pLocator->Release();
 }
