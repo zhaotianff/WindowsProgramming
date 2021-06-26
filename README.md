@@ -59,6 +59,11 @@ Windows programming demo
   * 创建进程API
   * 突破SESSION 0隔离创建用户进程 
   * 内存直接加载运行
-
+* [多线程](https://github.com/zhaotianff/WindowsProgramming/tree/master/Thread)
+  * 线程基础
+* [WMI(Windows Management Instrumentation)](https://github.com/zhaotianff/WindowsProgramming/tree/master/WMI)
+  * 获取WMI Provider数据
+  * 枚举WMI Provider函数
+  * 调用WMI Provider函数
 ## Licenses
 [MIT](LICENSE)
