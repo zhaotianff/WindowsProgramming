@@ -38,4 +38,6 @@ public:
 	static STARTUPINFO sinfo;
 	static PROCESS_INFORMATION pi;
 	static DWORD WINAPI MonitorThreadProc(LPVOID lpThreadParameter);
+	static DWORD WINAPI MonitorCMDThreadProc(LPVOID lpThreadParameter);
+	afx_msg void OnBnClickedButton1();
 };

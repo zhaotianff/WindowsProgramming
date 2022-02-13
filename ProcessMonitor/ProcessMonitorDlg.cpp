@@ -7,6 +7,7 @@
 #include "ProcessMonitor.h"
 #include "ProcessMonitorDlg.h"
 #include "afxdialogex.h"
+#include<TlHelp32.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -71,6 +72,7 @@ BEGIN_MESSAGE_MAP(CProcessMonitorDlg, CDialogEx)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON2, &CProcessMonitorDlg::OnBnClickedButton2)
+	ON_BN_CLICKED(IDC_BUTTON1, &CProcessMonitorDlg::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 
@@ -162,13 +164,75 @@ HCURSOR CProcessMonitorDlg::OnQueryDragIcon()
 void CProcessMonitorDlg::OnBnClickedButton2()
 {
 	LPTSTR szNotepad = _tcsdup(TEXT("notepad.exe"));
-	CreateProcess(NULL, szNotepad, NULL, NULL, FALSE, 0, NULL, NULL, &sinfo, &pi);
-	CreateThread(NULL, 0, MonitorThreadProc, NULL, 0, NULL);
+	::CreateProcess(NULL, szNotepad, NULL, NULL, FALSE, 0, NULL, NULL, &sinfo, &pi);
+	::CreateThread(NULL, 0, MonitorThreadProc, NULL, 0, NULL);	
+	free(szNotepad);
 }
 
 DWORD __stdcall CProcessMonitorDlg::MonitorThreadProc(LPVOID lpThreadParameter)
 {
-	WaitForSingleObject(pi.hProcess, INFINITE);
-	AfxMessageBox(L"notepad.exe exit");
+	::WaitForSingleObject(pi.hProcess, INFINITE);
+	DWORD dwCode = 0;
+	GetExitCodeProcess(pi.hProcess, &dwCode);
+	TCHAR buf[260]{};
+	wsprintf(buf, L"notepad.exe exit,exit code = %d", dwCode);
+	::MessageBox(NULL, buf, L"tooltip", MB_OK);
 	return 0;
+}
+
+DWORD __stdcall CProcessMonitorDlg::MonitorCMDThreadProc(LPVOID lpThreadParameter)
+{
+	DWORD dwCmdPid = (DWORD)lpThreadParameter;
+	HANDLE hProcessCmd =::OpenProcess(PROCESS_QUERY_INFORMATION| SYNCHRONIZE, FALSE, dwCmdPid);
+
+	if(hProcessCmd)
+		::WaitForSingleObject(hProcessCmd, INFINITE);
+
+	DWORD dwCode = 0;
+	if (hProcessCmd)
+	{
+		GetExitCodeProcess(hProcessCmd, &dwCode);
+		CloseHandle(hProcessCmd);
+	}
+	TCHAR buf[260]{};
+	wsprintf(buf, L"cmd.exe exit,exit code = %d", dwCode);
+	::MessageBox(NULL, buf, L"tooltip", MB_OK);
+	return 0;
+}
+
+
+void CProcessMonitorDlg::OnBnClickedButton1()
+{
+	PROCESSENTRY32 pe{};
+	pe.dwSize = sizeof(PROCESSENTRY32);
+	HANDLE hSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+
+	if (hSnapShot == NULL)
+	{
+		::MessageBox(NULL, L"创建进程快照失败", L"", MB_OK | MB_ICONINFORMATION);
+		return;
+	}
+
+	BOOL bNext = Process32First(hSnapShot, &pe);
+
+	BOOL bFind = FALSE;
+
+	while (bNext)
+	{
+		if (lstrcmp(pe.szExeFile,L"cmd.exe") == 0)
+		{
+			::CreateThread(NULL, 0, MonitorCMDThreadProc, (PVOID)pe.th32ProcessID, 0, NULL);
+			bFind = TRUE;
+			break;
+		}
+
+		bNext = Process32Next(hSnapShot, &pe);
+	}
+
+	if (bFind == FALSE)
+	{
+		::MessageBox(NULL, L"cmd.exe未运行", L"tooltip", MB_OK);
+	}
+
+	CloseHandle(hSnapShot);
 }
