@@ -51,6 +51,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ProcessMonitor", "ProcessMo
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "COM", "COM\COM.vcxproj", "{1BCF2613-7AE3-4CE4-A80C-92FF9E893883}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Registry", "Registry\Registry.vcxproj", "{F806F8E4-4D87-4969-B6D8-9505476160DA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -243,6 +245,14 @@ Global
 		{1BCF2613-7AE3-4CE4-A80C-92FF9E893883}.Release|x64.Build.0 = Release|x64
 		{1BCF2613-7AE3-4CE4-A80C-92FF9E893883}.Release|x86.ActiveCfg = Release|Win32
 		{1BCF2613-7AE3-4CE4-A80C-92FF9E893883}.Release|x86.Build.0 = Release|Win32
+		{F806F8E4-4D87-4969-B6D8-9505476160DA}.Debug|x64.ActiveCfg = Debug|x64
+		{F806F8E4-4D87-4969-B6D8-9505476160DA}.Debug|x64.Build.0 = Debug|x64
+		{F806F8E4-4D87-4969-B6D8-9505476160DA}.Debug|x86.ActiveCfg = Debug|Win32
+		{F806F8E4-4D87-4969-B6D8-9505476160DA}.Debug|x86.Build.0 = Debug|Win32
+		{F806F8E4-4D87-4969-B6D8-9505476160DA}.Release|x64.ActiveCfg = Release|x64
+		{F806F8E4-4D87-4969-B6D8-9505476160DA}.Release|x64.Build.0 = Release|x64
+		{F806F8E4-4D87-4969-B6D8-9505476160DA}.Release|x86.ActiveCfg = Release|Win32
+		{F806F8E4-4D87-4969-B6D8-9505476160DA}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

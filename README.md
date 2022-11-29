@@ -66,5 +66,6 @@ Windows programming demo
   * 获取WMI Provider数据
   * 枚举WMI Provider函数
   * 调用WMI Provider函数
+* [注册表]((https://github.com/zhaotianff/WindowsProgramming/tree/master/Registry))
 ## Licenses
 [MIT](LICENSE)
