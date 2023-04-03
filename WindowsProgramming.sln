@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30711.63
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Disk", "Disk\Disk.vcxproj", "{F02EA9A2-0073-41F7-B217-A550185017D9}"
 EndProject
@@ -52,6 +52,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "COM", "COM\COM.vcxproj", "{1BCF2613-7AE3-4CE4-A80C-92FF9E893883}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Registry", "Registry\Registry.vcxproj", "{F806F8E4-4D87-4969-B6D8-9505476160DA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Exception", "Exception\Exception.vcxproj", "{6BB5DCBE-63C5-4A12-B349-F1B3993EBACE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -253,6 +255,14 @@ Global
 		{F806F8E4-4D87-4969-B6D8-9505476160DA}.Release|x64.Build.0 = Release|x64
 		{F806F8E4-4D87-4969-B6D8-9505476160DA}.Release|x86.ActiveCfg = Release|Win32
 		{F806F8E4-4D87-4969-B6D8-9505476160DA}.Release|x86.Build.0 = Release|Win32
+		{6BB5DCBE-63C5-4A12-B349-F1B3993EBACE}.Debug|x64.ActiveCfg = Debug|x64
+		{6BB5DCBE-63C5-4A12-B349-F1B3993EBACE}.Debug|x64.Build.0 = Debug|x64
+		{6BB5DCBE-63C5-4A12-B349-F1B3993EBACE}.Debug|x86.ActiveCfg = Debug|Win32
+		{6BB5DCBE-63C5-4A12-B349-F1B3993EBACE}.Debug|x86.Build.0 = Debug|Win32
+		{6BB5DCBE-63C5-4A12-B349-F1B3993EBACE}.Release|x64.ActiveCfg = Release|x64
+		{6BB5DCBE-63C5-4A12-B349-F1B3993EBACE}.Release|x64.Build.0 = Release|x64
+		{6BB5DCBE-63C5-4A12-B349-F1B3993EBACE}.Release|x86.ActiveCfg = Release|Win32
+		{6BB5DCBE-63C5-4A12-B349-F1B3993EBACE}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -261,6 +271,7 @@ Global
 		{1C7D6AB3-6E7C-48B9-83C1-C3394C6CE06C} = {1E19A88B-3013-4EB9-994E-F1DCF568D657}
 		{4DD679C6-EC85-4696-9856-5C0E8DDAAEC7} = {1E19A88B-3013-4EB9-994E-F1DCF568D657}
 		{EB24FE53-7C30-4794-B11A-CBC9DEE33E39} = {1E19A88B-3013-4EB9-994E-F1DCF568D657}
+		{6BB5DCBE-63C5-4A12-B349-F1B3993EBACE} = {1E19A88B-3013-4EB9-994E-F1DCF568D657}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {794C7078-B5BA-4004-8965-A2864872EBFB}
