@@ -49,6 +49,7 @@ Windows programming demo
   * 追加文件
   * 读取文件
   * 删除文件
+  * [枚举文件](https://github.com/zhaotianff/WindowsProgramming/tree/master/EnumFile)
 * [通用对话框](https://github.com/zhaotianff/WindowsProgramming/tree/master/CommonDlg)
   * 打开/保存文件对话框
   * 浏览文件夹对话框
