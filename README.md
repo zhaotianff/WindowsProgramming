@@ -13,6 +13,8 @@ Windows programming demo
 * [统一初始化](https://github.com/zhaotianff/WindowsProgramming/tree/master/UniformInitialization)  
 
 ## 代码列表
+* [窗口](https://github.com/zhaotianff/WindowsProgramming/tree/master/CreateWindowDemo)
+  * 使用代码创建一个Windows窗口
 * [磁盘](https://github.com/zhaotianff/WindowsProgramming/tree/master/Disk)
   * 获取磁盘卷标名
   * 获取磁盘空间
