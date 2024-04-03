@@ -70,5 +70,8 @@ Windows programming demo
   * 枚举WMI Provider函数
   * 调用WMI Provider函数
 * [注册表]((https://github.com/zhaotianff/WindowsProgramming/tree/master/Registry))
+* 绘图
+  * [绘图基础](https://www.cnblogs.com/zhaotianff/p/18108747)
+  * [鼠标绘图](https://github.com/zhaotianff/WindowsProgramming/tree/master/MousePaint)
 ## Licenses
 [MIT](LICENSE)
