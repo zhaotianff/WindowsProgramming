@@ -70,8 +70,12 @@ Windows programming demo
   * 枚举WMI Provider函数
   * 调用WMI Provider函数
 * [注册表]((https://github.com/zhaotianff/WindowsProgramming/tree/master/Registry))
-* 绘图
+* [绘图](https://github.com/zhaotianff/WindowsProgramming/tree/master/Drawing)
   * [绘图基础](https://www.cnblogs.com/zhaotianff/p/18108747)
-  * [鼠标绘图](https://github.com/zhaotianff/WindowsProgramming/tree/master/MousePaint)
+  * [鼠标绘图](https://github.com/zhaotianff/WindowsProgramming/tree/master/Drawing/MousePaint)
+  * [BeginPaint使用](https://github.com/zhaotianff/WindowsProgramming/tree/master/Drawing/BeginPaintStartup)
+  * [无效区域](https://github.com/zhaotianff/WindowsProgramming/tree/master/Drawing/InvalidateArea)
+  * [文本颜色](https://github.com/zhaotianff/WindowsProgramming/tree/master/Drawing/TextColor)
+  * [定时器](https://github.com/zhaotianff/WindowsProgramming/tree/master/Drawing/TimerDrawer)
 ## Licenses
 [MIT](LICENSE)
