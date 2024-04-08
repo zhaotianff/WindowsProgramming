@@ -8,5 +8,5 @@
 
 int main()
 {
-    CreateRemoteThreadInject(29300, LR"(E:\project\github\WindowsProgramming\x64\Debug\RemoteThread_lib.dll)");
+    CreateRemoteThreadInject(30112, LR"(E:\project\github\Master-Zhao\Master-Zhao\x64\Debug\net6.0-windows\MasterZhaoCoreShellHook.dll)");
 }
