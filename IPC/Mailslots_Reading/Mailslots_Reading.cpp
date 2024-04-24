@@ -107,6 +107,7 @@ BOOL ReadSlot(HANDLE hSlot)
 
 int main()
 {
+    //Run read demo first,then run write demo
     HANDLE hSlot = MakeSlot(DEMO_SLOT_NAME);
 
     while (TRUE)

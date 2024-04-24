@@ -6,28 +6,6 @@
 
 #define DEMO_SLOT_NAME L"\\\\.\\mailslot\\demo_slot"
 
-HANDLE WINAPI MakeSlot(LPCTSTR lpszSlotName)
-{
-    HANDLE hSlot = CreateMailslot(lpszSlotName,
-        0,                      //no maximum message size
-        MAILSLOT_WAIT_FOREVER,  //no time-out for operations
-        NULL);                  //default security
-
-    if (hSlot == INVALID_HANDLE_VALUE)
-    {
-        std::cout << "Create mailslot failed with " 
-            << GetLastError() 
-            << std::endl;
-        return NULL;
-    }
-    else
-    {
-        std::cout << "Create mailslot successfully." << std::endl;
-        return hSlot;
-    }
-    
-}
-
 BOOL WriteSlot(LPCTSTR lpszSlotName, LPCTSTR lpszMessage)
 {
     HANDLE hFile = CreateFile(lpszSlotName, GENERIC_WRITE, 
@@ -70,7 +48,6 @@ BOOL CloseSlot(HANDLE hSlot)
 
 int main()
 {
-    HANDLE hSlot = MakeSlot(DEMO_SLOT_NAME);
     WriteSlot(DEMO_SLOT_NAME, L"HelloWorld");
     
     // A mailslot exists until the CloseHandle function is called for all open server handles or 
@@ -79,5 +56,17 @@ int main()
     // all client handles to the mailslot are closed, 
     // and the mailslot itself is deleted from memory.
     //CloseHandle(hSlot);
+
+    //
+    //Caution:
+    //
+    //Q:Why mailslot is called one directional ? While there can be multiple client / servers?
+    //
+    //A:It really is one - directional.The process who creates a mailslot can only read from it, not to write to it.
+    //The process that opens the mailslot can only write to it, not read from it.A mailslot is not like a named pipe or a socket, 
+    //where data can flow in both directions over a single connection.
+    //If the process that creates the mailslot wants to send a reply, 
+    //it has to write to a different mailslot or other IPC mechanism.
+    //
     return 0;
 }
