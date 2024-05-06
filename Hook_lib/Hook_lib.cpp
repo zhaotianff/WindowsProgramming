@@ -14,6 +14,20 @@ HHOOK g_hHook = NULL;
 #pragma data_seg()
 #pragma comment(linker, "/SECTION:mydata,RWS")
 
+BOOL bInstalled = FALSE;
+
+LRESULT CALLBACK OwnerDrawButtonProc(HWND hWnd, UINT uMsg, WPARAM wParam,
+	LPARAM lParam, UINT_PTR uIdSubclass, DWORD_PTR dwRefData)
+{
+	switch (uMsg)
+	{
+	case WM_LBUTTONDOWN:
+		MessageBox(NULL, L"StartMenu", NULL, MB_OK);
+		return TRUE;
+	}
+	return DefSubclassProc(hWnd, uMsg, wParam, lParam);
+}
+
 // 钩子回调函数
 LRESULT GetMsgProc(int code, WPARAM wParam, LPARAM lParam)
 {
@@ -26,6 +40,24 @@ LRESULT GetMsgProc(int code, WPARAM wParam, LPARAM lParam)
 	if (code == HC_ACTION)
 	{
 		PMSG msg = (PMSG)lParam;
+
+		if (!bInstalled)
+		{
+			bInstalled = TRUE;
+			HWND tray = FindWindow(L"Shell_TrayWnd", NULL);
+			HWND hStart = FindWindowEx(tray, NULL, L"Start", NULL);
+			BOOL bResult = SetWindowSubclass(hStart, OwnerDrawButtonProc, 'CLSH', 0);
+
+			if (bResult)
+			{
+				MessageBox(NULL, L"1", NULL, MB_OK);
+			}
+			else
+			{
+				MessageBox(NULL, L"0", NULL, MB_OK);
+			}
+		}
+
 		return TRUE;
 	}
 	else
