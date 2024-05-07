@@ -72,6 +72,8 @@ BEGIN_MESSAGE_MAP(CIODlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON2, &CIODlg::OnBnClickedButton2)
 	ON_BN_CLICKED(IDC_BUTTON4, &CIODlg::OnBnClickedButton4)
 	ON_BN_CLICKED(IDC_BUTTON5, &CIODlg::OnBnClickedButton5)
+	ON_BN_CLICKED(IDC_BUTTON6, &CIODlg::OnBnClickedButton6)
+	ON_BN_CLICKED(IDC_BUTTON7, &CIODlg::OnBnClickedButton7)
 END_MESSAGE_MAP()
 
 
@@ -386,4 +388,29 @@ void CIODlg::OnBnClickedButton4()
 void CIODlg::OnBnClickedButton5()
 {
 	auto hFile = CreateFile(L"a.txt", FILE_APPEND_DATA, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+}
+
+
+void CIODlg::OnBnClickedButton6()
+{
+	HANDLE hFile = CreateFile(L"a.txt", FILE_APPEND_DATA, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	LARGE_INTEGER liOffset;
+	liOffset.QuadPart = 10;
+	SetFilePointerEx(hFile, liOffset, NULL, FILE_BEGIN); //从开始偏移10个字节
+
+	//ReadFile() 读取文件
+
+	CloseHandle(hFile);
+}
+
+
+void CIODlg::OnBnClickedButton7()
+{
+	HANDLE hFile = CreateFile(L"1024.txt", GENERIC_WRITE|GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	LARGE_INTEGER liDistanceToMove;
+	liDistanceToMove.QuadPart = 1024;
+	SetFilePointerEx(hFile, liDistanceToMove, NULL, FILE_BEGIN);
+	SetEndOfFile(hFile);
+	CloseHandle(hFile);
 }
