@@ -77,6 +77,9 @@ Windows programming demo
   * [无效区域](https://github.com/zhaotianff/WindowsProgramming/tree/master/Drawing/InvalidateArea)
   * [文本颜色](https://github.com/zhaotianff/WindowsProgramming/tree/master/Drawing/TextColor)
   * [定时器](https://github.com/zhaotianff/WindowsProgramming/tree/master/Drawing/TimerDrawer)
-* [COM智能指针](https://github.com/zhaotianff/WindowsProgramming/tree/master/ComPtr)
+* [COM](https://github.com/zhaotianff/WindowsProgramming/tree/master/COM)
+  * [初始化](https://github.com/zhaotianff/WindowsProgramming/tree/master/COM/Create)
+  * [COM智能指针](https://github.com/zhaotianff/WindowsProgramming/tree/master/COM/ComPtr)
+  
 ## Licenses
 [MIT](LICENSE)
