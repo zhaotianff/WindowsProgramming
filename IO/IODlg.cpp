@@ -74,6 +74,7 @@ BEGIN_MESSAGE_MAP(CIODlg, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON5, &CIODlg::OnBnClickedButton5)
 	ON_BN_CLICKED(IDC_BUTTON6, &CIODlg::OnBnClickedButton6)
 	ON_BN_CLICKED(IDC_BUTTON7, &CIODlg::OnBnClickedButton7)
+	ON_BN_CLICKED(IDC_BUTTON3, &CIODlg::OnBnClickedButton3)
 END_MESSAGE_MAP()
 
 
@@ -413,4 +414,23 @@ void CIODlg::OnBnClickedButton7()
 	SetFilePointerEx(hFile, liDistanceToMove, NULL, FILE_BEGIN);
 	SetEndOfFile(hFile);
 	CloseHandle(hFile);
+}
+
+
+void CIODlg::OnBnClickedButton3()
+{
+	HANDLE hFile = CreateFile(L"1024.txt", GENERIC_WRITE | GENERIC_READ, FILE_SHARE_READ | FILE_SHARE_WRITE, NULL, OPEN_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+
+	if (INVALID_HANDLE_VALUE == hFile)
+		return;
+
+	LPCTSTR buffer = _tcsdup(L"HelloWorld");
+	DWORD nSizeToWrite = lstrlen(buffer) * sizeof(TCHAR);
+	DWORD dwSizeWritten = 0;
+	if (WriteFile(hFile, buffer, nSizeToWrite, &dwSizeWritten, NULL))
+	{
+		AfxMessageBox(L"写入成功");
+	}
+
+	free((void*)buffer);
 }
