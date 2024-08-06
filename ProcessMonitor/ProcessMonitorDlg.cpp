@@ -207,7 +207,7 @@ void CProcessMonitorDlg::OnBnClickedButton1()
 	pe.dwSize = sizeof(PROCESSENTRY32);
 	HANDLE hSnapShot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 
-	if (hSnapShot == NULL)
+	if (hSnapShot == INVALID_HANDLE_VALUE)
 	{
 		::MessageBox(NULL, L"创建进程快照失败", L"", MB_OK | MB_ICONINFORMATION);
 		return;
