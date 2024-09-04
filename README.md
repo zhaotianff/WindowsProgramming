@@ -80,6 +80,7 @@ Windows programming demo
 * [COM](https://github.com/zhaotianff/WindowsProgramming/tree/master/COM)
   * [初始化](https://github.com/zhaotianff/WindowsProgramming/tree/master/COM/Create)
   * [COM智能指针](https://github.com/zhaotianff/WindowsProgramming/tree/master/COM/ComPtr)
+* [BypassUAC](https://github.com/zhaotianff/WindowsProgramming/tree/master/BypassUAC)
   
 ## Licenses
 [MIT](LICENSE)
