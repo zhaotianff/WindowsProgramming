@@ -37,6 +37,22 @@ typedef struct _Type1SystemInformation
     BYTE    m_bFamily;            // Family字符串的编号
 }Type1SystemInformation, * PType1SystemInformation;
 
+typedef struct _Type28TemperatureProbe
+{
+    BYTE 	Type;
+    BYTE 	Length;
+    WORD 	Handle;
+    BYTE 	Description;
+    BYTE 	Location;
+    WORD 	Maximum;
+    WORD 	Minimum;
+    WORD 	Resolution;
+    WORD 	Tolerance;
+    WORD 	Accuracy;
+    DWORD 	OEM;
+    WORD 	Nominal;
+}Type28TemperatureProbe, * PType28TemperatureProbe;
+
 LPSTR FindStrFromSMBIOSDataStruct(PSMBIOSHeader pStructHeader, BYTE bNum)
 {
     // 指向SMBIOS结构的未格式化区域(字符串数组)
@@ -94,6 +110,7 @@ int main()
         {
             PType1SystemInformation pType1 = (PType1SystemInformation)pStructHeader;
   
+            std::cout << "********************* System Info *********************" << std::endl;
             std::cout << "Manufacturer: " << FindStrFromSMBIOSDataStruct(pStructHeader, pType1->m_bManufacturer) << std::endl;
             std::cout << "ProductName: " << FindStrFromSMBIOSDataStruct(pStructHeader, pType1->m_bProductName) << std::endl;
             std::cout << "Version: " << FindStrFromSMBIOSDataStruct(pStructHeader, pType1->m_bVersion) << std::endl;
@@ -101,7 +118,27 @@ int main()
             std::cout << "SKUNumber: " << FindStrFromSMBIOSDataStruct(pStructHeader, pType1->m_bSKUNumber) << std::endl;
             std::cout << "Family: " << FindStrFromSMBIOSDataStruct(pStructHeader, pType1->m_bFamily) << std::endl;
             std::cout << "WakeupType: " << wakeUpTypeMap.find(pType1->m_bWakeupType)->second << std::endl;
+            std::cout << std::endl;
             
+        }
+        case 28:
+        {
+            PType28TemperatureProbe pType28 = (PType28TemperatureProbe)pStructHeader;
+
+            std::cout << "********************* Temperature Probe *********************" << std::endl;
+            std::cout << "Accuracy: " << pType28->Accuracy << std::endl;
+            std::cout << "Description: " << FindStrFromSMBIOSDataStruct(pStructHeader, pType28->Description) << std::endl;
+            std::cout << "Handle: " << pType28->Handle << std::endl;
+            std::cout << "Length: " << pType28->Length << std::endl;
+            std::cout << "Location: " << (int)pType28->Location << std::endl;
+            std::cout << "Maximum: " << pType28->Maximum << std::endl;
+            std::cout << "Minimum: " << pType28->Minimum << std::endl;
+            std::cout << "Nominal: " << pType28->Nominal << std::endl;
+            std::cout << "OEM: " << pType28->OEM << std::endl;
+            std::cout << "Resolution: " << pType28->Resolution << std::endl;
+            std::cout << "Tolerance: " << pType28->Tolerance << std::endl;
+            std::cout << "Type: " << (int)pType28->Type << std::endl;
+            std::cout << std::endl;
         }
             break;
         default:
